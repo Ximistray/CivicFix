@@ -1,4 +1,4 @@
-package avik.hakobyan.civicfix.ui;
+package avik.hakobyan.civicfix.ui.main;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,7 +7,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
 
-import avik.hakobyan.civicfix.ui.main.MainActivity;
 import avik.hakobyan.civicfix.ui.auth.LoginActivity;
 
 public class SplashActivity extends AppCompatActivity {

@@ -11,10 +11,11 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import avik.hakobyan.civicfix.R;
 import avik.hakobyan.civicfix.ui.auth.LoginActivity;
+import avik.hakobyan.civicfix.ui.report.ReportProblemActivity;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Button btnLogout;
+    private Button btnLogout, btnGoReport;
     private FirebaseAuth mAuth;
 
     @Override
@@ -26,8 +27,13 @@ public class MainActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
 
         btnLogout = findViewById(R.id.btnLogout);
+        btnGoReport = findViewById(R.id.btnReportProblem);
 
         btnLogout.setOnClickListener(v -> logout());
+        btnGoReport.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, ReportProblemActivity.class);
+            startActivity(intent);
+        });
 
     }
 
