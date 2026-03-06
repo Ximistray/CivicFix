@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "9990805743",
+    "project_id": "civicfix-1dd61",
+    "storage_bucket": "civicfix-1dd61.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:9990805743:android:d066a3a1d32773f1c0631a",
+        "android_client_info": {
+          "package_name": "avik.hakobyan.civicfix"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAP1U64PLEweto2QvFvZiRP2acXJDGeXmQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
