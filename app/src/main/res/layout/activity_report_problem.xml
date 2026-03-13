@@ -18,6 +18,21 @@
             android:textStyle="bold"
             android:layout_marginBottom="20dp"/>
 
+        <ImageView
+            android:id="@+id/imagePreview"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:background="#DDDDDD"
+            android:scaleType="centerCrop"
+            android:layout_marginBottom="10dp"/>
+
+        <Button
+            android:id="@+id/btnSelectPhoto"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Take Photo"
+            android:layout_marginBottom="20dp"/>
+
         <Spinner
             android:id="@+id/spinnerType"
             android:layout_width="match_parent"
