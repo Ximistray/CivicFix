@@ -2,7 +2,8 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/report"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/background_gradient">
 
     <LinearLayout
         android:orientation="vertical"
@@ -30,6 +31,8 @@
             android:id="@+id/btnSelectPhoto"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/bg_button"
+            android:textColor="#FFFFFF"
             android:text="Take Photo"
             android:layout_marginBottom="20dp"/>
 
@@ -44,7 +47,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Description of the problem"
-            android:layout_marginBottom="20dp"/>
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/bg_input"
+            android:padding="12dp"/>
 
         <TextView
             android:id="@+id/tvLocation"
@@ -57,11 +62,14 @@
             android:id="@+id/btnLocation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/bg_button"
+            android:textColor="#FFFFFF"
             android:text="Get Location"
             android:layout_marginBottom="20dp"/>
 
         <Button
             android:id="@+id/btnSendReport"
+            android:backgroundTint="#4CAF50"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Send Report" />
