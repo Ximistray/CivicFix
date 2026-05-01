@@ -3,7 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="avik.hakobyan.civicfix">
 
-
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -17,6 +16,7 @@
         android:required="false" />
 
     <application
+        android:name=".CivicFixApp"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -25,33 +25,66 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.CivicFix">
-        <activity
-            android:name=".ui.map.MapActivity"
-            android:exported="false" />
+
         <activity
             android:name=".ui.main.SplashActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".ui.auth.LoginActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
+
         <activity
             android:name=".ui.auth.RegistrationActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
+
         <activity
             android:name=".ui.main.MainActivity"
             android:exported="false" />
+
+        <activity
+            android:name=".ui.main.ProfileActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".ui.main.SecuritySettingsActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".ui.main.NotificationSettingsActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".ui.main.LanguageSettingsActivity"
+            android:exported="false" />
+
         <activity
             android:name=".ui.report.ReportProblemActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustPan" />
+
+        <activity
+            android:name=".ui.report.MyReportsActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".ui.report.AllReportsActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".ui.report.ReportDetailActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".ui.map.MapActivity"
+            android:exported="false" />
 
         <provider
             android:name="androidx.core.content.FileProvider"

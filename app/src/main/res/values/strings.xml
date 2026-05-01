@@ -1,3 +1,75 @@
 <resources>
     <string name="app_name">CivicFix</string>
+    <string name="nav_home">Home</string>
+    <string name="nav_map">Map</string>
+    <string name="nav_reports">My Reports</string>
+    <string name="nav_profile">Profile</string>
+    
+    <string name="welcome_message">Better city, better life</string>
+    <string name="report_problem">Report a\nProblem</string>
+    <string name="report_desc">Snap a photo and fix your city</string>
+    <string name="explore">Explore</string>
+    <string name="all_reports">All Reports</string>
+
+    <string name="account_personalization">Account Personalization</string>
+    <string name="full_name">Full Name</string>
+    <string name="update_name">Update Name</string>
+    <string name="app_settings">App Settings</string>
+    <string name="security_password">Security &amp; Password</string>
+    <string name="notification_settings">Notification Settings</string>
+    <string name="language_settings">Language Settings</string>
+    <string name="sign_out">Sign Out</string>
+    <string name="about_app">About CivicFix</string>
+    <string name="privacy_policy">Privacy Policy</string>
+    <string name="support">Support</string>
+
+    <!-- Report Activity Strings -->
+    <string name="issue_header">What is the issue?</string>
+    <string name="problem_type">Problem Type</string>
+    <string name="description">Description</string>
+    <string name="add_photo">Add a Photo</string>
+    <string name="tap_capture">Tap to capture</string>
+    <string name="get_location">Get Location</string>
+    <string name="location_not_set">Location not set</string>
+    <string name="submit_report">Submit Report</string>
+    <string name="gps_error">Turn on GPS and try again</string>
+    <string name="location_lat_lon">Lat: %1$.6f, Lon: %2$.6f</string>
+    <string name="choose_photo_source">Choose photo source</string>
+    <string name="camera">Camera</string>
+    <string name="gallery">Gallery</string>
+    
+    <!-- Problem Types -->
+    <string name="type_all">All</string>
+    <string name="type_pothole">Pothole</string>
+    <string name="type_trash">Trash</string>
+    <string name="type_streetlight">Broken streetlight</string>
+    <string name="type_road">Damaged road</string>
+    <string name="type_other">Other</string>
+
+    <string name="no_reports">No reports yet</string>
+    <string name="no_reports_available">No reports available</string>
+    <string name="report_details">Report Details</string>
+    <string name="delete_report">Delete Report</string>
+    <string name="are_you_sure">Are you sure?</string>
+    <string name="edit_report">Edit Report</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
+    <string name="delete">Delete</string>
+
+    <!-- Statuses -->
+    <string name="status_pending">Pending</string>
+    <string name="status_in_progress">In Progress</string>
+    <string name="status_resolved">Resolved</string>
+
+    <!-- Auth Strings -->
+    <string name="login">Log in</string>
+    <string name="sign_up">Sign up</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="name_hint">Name</string>
+    <string name="password_hint">Password (min. 6 characters)</string>
+    <string name="repeat_password">Repeat your password</string>
+    <string name="dont_have_account">Don\'t have an account? Sign up</string>
+    <string name="already_have_account">Already have an account? Log in</string>
+    <string name="creating_account">Creating an account</string>
 </resources>

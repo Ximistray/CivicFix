@@ -1,0 +1,75 @@
+<resources>
+    <string name="app_name">CivicFix</string>
+    <string name="nav_home">Գլխավոր</string>
+    <string name="nav_map">Քարտեզ</string>
+    <string name="nav_reports">Իմ հաղորդումները</string>
+    <string name="nav_profile">Պրոֆիլ</string>
+    
+    <string name="welcome_message">Ավելի լավ քաղաք, ավելի լավ կյանք</string>
+    <string name="report_problem">Հաղորդել\nխնդրի մասին</string>
+    <string name="report_desc">Լուսանկարեք և բարելավեք ձեր քաղաքը</string>
+    <string name="explore">Բացահայտել</string>
+    <string name="all_reports">Բոլոր հաղորդումները</string>
+
+    <string name="account_personalization">Հաշվի անհատականացում</string>
+    <string name="full_name">Ամբողջական անուն</string>
+    <string name="update_name">Թարմացնել անունը</string>
+    <string name="app_settings">Հավելվածի կարգավորումներ</string>
+    <string name="security_password">Անվտանգություն և գաղտնաբառ</string>
+    <string name="notification_settings">Ծանուցումների կարգավորումներ</string>
+    <string name="language_settings">Լեզվի կարգավորումներ</string>
+    <string name="sign_out">Դուրս գալ</string>
+    <string name="about_app">CivicFix-ի մասին</string>
+    <string name="privacy_policy">Գաղտնիության քաղաքականություն</string>
+    <string name="support">Աջակցություն</string>
+
+    <!-- Report Activity Strings -->
+    <string name="issue_header">Ո՞րն է խնդիրը:</string>
+    <string name="problem_type">Խնդրի տեսակը</string>
+    <string name="description">Նկարագրություն</string>
+    <string name="add_photo">Ավելացնել լուսանկար</string>
+    <string name="tap_capture">Սեղմեք լուսանկարելու համար</string>
+    <string name="get_location">Գտնել</string>
+    <string name="location_not_set">Նշված չէ</string>
+    <string name="submit_report">Ուղարկել</string>
+    <string name="gps_error">Միացրեք GPS-ը և փորձեք նորից</string>
+    <string name="location_lat_lon">Լայն.: %1$.6f, Երկ.: %2$.6f</string>
+    <string name="choose_photo_source">Ընտրեք լուսանկարի աղբյուրը</string>
+    <string name="camera">Տեսախցիկ</string>
+    <string name="gallery">Պատկերասրահ</string>
+
+    <!-- Problem Types -->
+    <string name="type_all">Բոլորը</string>
+    <string name="type_pothole">Փոս</string>
+    <string name="type_trash">Աղբ</string>
+    <string name="type_streetlight">Կոտրված լապտեր</string>
+    <string name="type_road">Վնասված ճանապարհ</string>
+    <string name="type_other">Այլ</string>
+
+    <string name="no_reports">Դեռ հաղորդումներ չկան</string>
+    <string name="no_reports_available">Հասանելի հաղորդումներ չկան</string>
+    <string name="report_details">Հաղորդման մանրամասները</string>
+    <string name="delete_report">Ջնջել հաղորդումը</string>
+    <string name="are_you_sure">Վստա՞հ եք:</string>
+    <string name="edit_report">Խմբագրել հաղորդումը</string>
+    <string name="save">Պահպանել</string>
+    <string name="cancel">Չեղարկել</string>
+    <string name="delete">Ջնջել</string>
+
+    <!-- Statuses -->
+    <string name="status_pending">Սպասման մեջ</string>
+    <string name="status_in_progress">Ընթացքի մեջ</string>
+    <string name="status_resolved">Լուծված</string>
+
+    <!-- Auth Strings -->
+    <string name="login">Մուտք գործել</string>
+    <string name="sign_up">Գրանցվել</string>
+    <string name="email">Էլ. փոստ</string>
+    <string name="password">Գաղտնաբառ</string>
+    <string name="name_hint">Անուն</string>
+    <string name="password_hint">Գաղտնաբառ (նվազ. 6 նիշ)</string>
+    <string name="repeat_password">Կրկնեք գաղտնաբառը</string>
+    <string name="dont_have_account">Չունե՞ք հաշիվ: Գրանցվեք</string>
+    <string name="already_have_account">Արդեն ունե՞ք հաշիվ: Մուտք գործեք</string>
+    <string name="creating_account">Հաշվի ստեղծում</string>
+</resources>

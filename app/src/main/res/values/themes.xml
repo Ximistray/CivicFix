@@ -4,7 +4,10 @@
         <item name="colorPrimary">#6C63FF</item>
         <item name="colorPrimaryVariant">#5A54E0</item>
         <item name="colorSecondary">#4CAF50</item>
-        <item name="android:statusBarColor">#6C63FF</item>"
+        <item name="android:statusBarColor">#6C63FF</item>
     </style>
 
+    <style name="CircleImage">
+        <item name="cornerSize">50%</item>
+    </style>
 </resources>

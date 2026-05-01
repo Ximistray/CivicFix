@@ -1,27 +1,31 @@
 package avik.hakobyan.civicfix.ui.report;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.FileProvider;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -33,6 +37,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import avik.hakobyan.civicfix.LocaleHelper;
 import avik.hakobyan.civicfix.R;
 
 public class ReportProblemActivity extends AppCompatActivity {
@@ -41,12 +46,15 @@ public class ReportProblemActivity extends AppCompatActivity {
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1001;
     private static final int CAMERA_PERMISSION_REQUEST_CODE = 1002;
     private static final int CAMERA_REQUEST = 2001;
+    private static final int GALLERY_REQUEST = 2002;
 
-    private EditText etDescription;
-    private Spinner spinnerType;
-    private Button btnLocation, btnSendReport, btnSelectPhoto;
+    private TextInputEditText etDescription;
+    private AutoCompleteTextView spinnerType;
+    private Button btnLocation, btnSendReport;
+    private View btnSelectPhoto;
     private TextView tvLocation;
     private ImageView imagePreview;
+    private View photoPlaceholder;
 
     private Uri imageUri;
     private double latitude = 0, longitude = 0;
@@ -58,9 +66,21 @@ public class ReportProblemActivity extends AppCompatActivity {
     private StorageReference storageRef;
 
     @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(LocaleHelper.onAttach(newBase));
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_report_problem);
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+        toolbar.setNavigationOnClickListener(v -> finish());
 
         initViews();
         
@@ -75,13 +95,14 @@ public class ReportProblemActivity extends AppCompatActivity {
             if (uriString != null) {
                 imageUri = Uri.parse(uriString);
                 imagePreview.setImageURI(imageUri);
+                photoPlaceholder.setVisibility(View.GONE);
             }
         }
 
         setupSpinner();
 
         btnLocation.setOnClickListener(v -> checkLocationPermissionAndGetLocation());
-        btnSelectPhoto.setOnClickListener(v -> checkCameraPermissionAndOpen());
+        btnSelectPhoto.setOnClickListener(v -> showPhotoOptions());
         btnSendReport.setOnClickListener(v -> sendReport());
     }
 
@@ -101,12 +122,34 @@ public class ReportProblemActivity extends AppCompatActivity {
         btnSelectPhoto = findViewById(R.id.btnSelectPhoto);
         imagePreview = findViewById(R.id.imagePreview);
         tvLocation = findViewById(R.id.tvLocation);
+        photoPlaceholder = findViewById(R.id.photoPlaceholder);
     }
 
     private void setupSpinner() {
-        String[] types = {"Pothole", "Trash", "Broken streetlight", "Damaged road", "Other"};
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, types);
+        String[] types = {
+                getString(R.string.type_pothole),
+                getString(R.string.type_trash),
+                getString(R.string.type_streetlight),
+                getString(R.string.type_road),
+                getString(R.string.type_other)
+        };
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, types);
         spinnerType.setAdapter(adapter);
+        spinnerType.setText(types[0], false);
+    }
+
+    private void showPhotoOptions() {
+        String[] options = {getString(R.string.camera), getString(R.string.gallery)};
+        new MaterialAlertDialogBuilder(this)
+                .setTitle(R.string.choose_photo_source)
+                .setItems(options, (dialog, which) -> {
+                    if (which == 0) {
+                        checkCameraPermissionAndOpen();
+                    } else {
+                        openGallery();
+                    }
+                })
+                .show();
     }
 
     private void checkLocationPermissionAndGetLocation() {
@@ -125,22 +168,26 @@ public class ReportProblemActivity extends AppCompatActivity {
         }
     }
 
+    private void openGallery() {
+        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(intent, GALLERY_REQUEST);
+    }
+
     private void getLocation() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) return;
         locationClient.getLastLocation().addOnSuccessListener(this, location -> {
             if (location != null) {
                 latitude = location.getLatitude();
                 longitude = location.getLongitude();
-                tvLocation.setText(String.format("Lat: %.6f, Lon: %.6f", latitude, longitude));
+                tvLocation.setText(getString(R.string.location_lat_lon, latitude, longitude));
             } else {
-                Toast.makeText(this, "Turn on GPS and try again", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, getString(R.string.gps_error), Toast.LENGTH_SHORT).show();
             }
         });
     }
 
     private void openCamera() {
         try {
-            // Using getExternalCacheDir so the camera app can write to the file
             File storageDir = getExternalCacheDir();
             File imageFile = File.createTempFile("report_", ".jpg", storageDir);
             imageUri = FileProvider.getUriForFile(this, getPackageName() + ".provider", imageFile);
@@ -168,18 +215,31 @@ public class ReportProblemActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == CAMERA_REQUEST && resultCode == RESULT_OK) {
-            if (imageUri != null) {
-                imagePreview.setImageURI(null); 
-                imagePreview.setImageURI(imageUri);
-                Log.d(TAG, "Photo URI: " + imageUri);
+        if (resultCode == RESULT_OK) {
+            if (requestCode == CAMERA_REQUEST) {
+                if (imageUri != null) {
+                    displaySelectedImage();
+                }
+            } else if (requestCode == GALLERY_REQUEST) {
+                if (data != null && data.getData() != null) {
+                    imageUri = data.getData();
+                    displaySelectedImage();
+                }
             }
         }
     }
 
+    private void displaySelectedImage() {
+        imagePreview.setImageURI(null); 
+        imagePreview.setImageURI(imageUri);
+        photoPlaceholder.setVisibility(View.GONE);
+        Log.d(TAG, "Photo URI: " + imageUri);
+    }
+
     private void sendReport() {
+        if (etDescription.getText() == null) return;
         String description = etDescription.getText().toString().trim();
-        String type = spinnerType.getSelectedItem().toString();
+        String type = spinnerType.getText().toString();
         
         if (mAuth.getCurrentUser() == null) {
             Toast.makeText(this, "Please log in first", Toast.LENGTH_SHORT).show();
@@ -187,8 +247,8 @@ public class ReportProblemActivity extends AppCompatActivity {
         }
         String userId = mAuth.getCurrentUser().getUid();
 
-        if (description.isEmpty()) { etDescription.setError("Description required"); return; }
-        if (latitude == 0 && longitude == 0) { Toast.makeText(this, "Get location first", Toast.LENGTH_SHORT).show(); return; }
+        if (description.isEmpty()) { etDescription.setError(getString(R.string.description)); return; }
+        if (latitude == 0 && longitude == 0) { Toast.makeText(this, getString(R.string.get_location), Toast.LENGTH_SHORT).show(); return; }
 
         btnSendReport.setEnabled(false);
         String reportId = problemsRef.push().getKey();
@@ -196,11 +256,14 @@ public class ReportProblemActivity extends AppCompatActivity {
 
         Map<String, Object> reportData = new HashMap<>();
         reportData.put("description", description);
-        reportData.put("type", type);
+        
+        String dbType = getEnglishType(type);
+        reportData.put("type", dbType);
+        
         reportData.put("latitude", latitude);
         reportData.put("longitude", longitude);
         reportData.put("userId", userId);
-        reportData.put("status", "OPEN");
+        reportData.put("status", "pending");
         reportData.put("timestamp", System.currentTimeMillis());
 
         if (imageUri != null) {
@@ -227,10 +290,18 @@ public class ReportProblemActivity extends AppCompatActivity {
         }
     }
 
+    private String getEnglishType(String localizedType) {
+        if (localizedType.equals(getString(R.string.type_pothole))) return "Pothole";
+        if (localizedType.equals(getString(R.string.type_trash))) return "Trash";
+        if (localizedType.equals(getString(R.string.type_streetlight))) return "Broken streetlight";
+        if (localizedType.equals(getString(R.string.type_road))) return "Damaged road";
+        return "Other";
+    }
+
     private void saveReport(String reportId, Map<String, Object> reportData) {
         problemsRef.child(reportId).setValue(reportData)
             .addOnSuccessListener(aVoid -> {
-                Toast.makeText(this, "Report sent successfully!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, getString(R.string.submit_report) + " Success!", Toast.LENGTH_SHORT).show();
                 finish();
             })
             .addOnFailureListener(e -> {

@@ -1,0 +1,75 @@
+<resources>
+    <string name="app_name">CivicFix</string>
+    <string name="nav_home">Главная</string>
+    <string name="nav_map">Карта</string>
+    <string name="nav_reports">Мои отчеты</string>
+    <string name="nav_profile">Профиль</string>
+    
+    <string name="welcome_message">Лучше город, лучше жизнь</string>
+    <string name="report_problem">Сообщить о\nпроблеме</string>
+    <string name="report_desc">Сделайте фото и исправьте свой город</string>
+    <string name="explore">Исследовать</string>
+    <string name="all_reports">Все отчеты</string>
+
+    <string name="account_personalization">Персонализация аккаунта</string>
+    <string name="full_name">Полное имя</string>
+    <string name="update_name">Обновить имя</string>
+    <string name="app_settings">Настройки приложения</string>
+    <string name="security_password">Безопасность и пароль</string>
+    <string name="notification_settings">Настройки уведомлений</string>
+    <string name="language_settings">Настройки языка</string>
+    <string name="sign_out">Выйти</string>
+    <string name="about_app">О CivicFix</string>
+    <string name="privacy_policy">Политика конфиденциальности</string>
+    <string name="support">Поддержка</string>
+
+    <!-- Report Activity Strings -->
+    <string name="issue_header">В чем проблема?</string>
+    <string name="problem_type">Тип проблемы</string>
+    <string name="description">Описание</string>
+    <string name="add_photo">Добавить фото</string>
+    <string name="tap_capture">Нажмите для фото</string>
+    <string name="get_location">Определить</string>
+    <string name="location_not_set">Не определено</string>
+    <string name="submit_report">Отправить отчет</string>
+    <string name="gps_error">Включите GPS и попробуйте снова</string>
+    <string name="location_lat_lon">Шир: %1$.6f, Долг: %2$.6f</string>
+    <string name="choose_photo_source">Выберите источник фото</string>
+    <string name="camera">Камера</string>
+    <string name="gallery">Галерея</string>
+
+    <!-- Problem Types -->
+    <string name="type_all">Все</string>
+    <string name="type_pothole">Выбоина</string>
+    <string name="type_trash">Мусор</string>
+    <string name="type_streetlight">Сломанный фонарь</string>
+    <string name="type_road">Поврежденная дорога</string>
+    <string name="type_other">Другое</string>
+
+    <string name="no_reports">Нет отчетов</string>
+    <string name="no_reports_available">Нет доступных отчетов</string>
+    <string name="report_details">Детали отчета</string>
+    <string name="delete_report">Удалить отчет</string>
+    <string name="are_you_sure">Вы уверены?</string>
+    <string name="edit_report">Изменить отчет</string>
+    <string name="save">Сохранить</string>
+    <string name="cancel">Отмена</string>
+    <string name="delete">Удалить</string>
+
+    <!-- Statuses -->
+    <string name="status_pending">В ожидании</string>
+    <string name="status_in_progress">В процессе</string>
+    <string name="status_resolved">Решено</string>
+
+    <!-- Auth Strings -->
+    <string name="login">Войти</string>
+    <string name="sign_up">Регистрация</string>
+    <string name="email">Эл. почта</string>
+    <string name="password">Пароль</string>
+    <string name="name_hint">Имя</string>
+    <string name="password_hint">Пароль (мин. 6 символов)</string>
+    <string name="repeat_password">Повторите пароль</string>
+    <string name="dont_have_account">Нет аккаунта? Зарегистрироваться</string>
+    <string name="already_have_account">Уже есть аккаунт? Войти</string>
+    <string name="creating_account">Создание аккаунта</string>
+</resources>

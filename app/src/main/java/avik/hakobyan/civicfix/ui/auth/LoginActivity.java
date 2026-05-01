@@ -16,6 +16,7 @@ import avik.hakobyan.civicfix.ui.main.MainActivity;
 import avik.hakobyan.civicfix.R;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -58,20 +59,25 @@ public class LoginActivity extends AppCompatActivity {
 
         mAuth.signInWithEmailAndPassword(email,password)
                 .addOnCompleteListener(task -> {
-
                     if(task.isSuccessful()){
-                        Log.d(TAG, "loginUser: Success");
-                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        startActivity(intent);
-                        finish();
-
+                        FirebaseUser user = mAuth.getCurrentUser();
+                        if (user != null) {
+                            if (user.isEmailVerified()) {
+                                Log.d(TAG, "loginUser: Success - Email Verified");
+                                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                startActivity(intent);
+                                finish();
+                            } else {
+                                Log.d(TAG, "loginUser: Email not verified");
+                                mAuth.signOut();
+                                Toast.makeText(this, "Please verify your email address. Check your inbox.", Toast.LENGTH_LONG).show();
+                            }
+                        }
                     } else {
                         Log.d(TAG, "loginUser: Failed, user not found or wrong credentials");
                         Toast.makeText(this,"Login failed: " + (task.getException() != null ? task.getException().getMessage() : "Unknown error"),Toast.LENGTH_SHORT).show();
-
                     }
-
                 });
     }
 }

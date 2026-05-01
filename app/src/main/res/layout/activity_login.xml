@@ -43,7 +43,7 @@
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etEmail"
-                    android:hint="Email"
+                    android:hint="@string/email"
                     android:inputType="textEmailAddress"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
@@ -58,7 +58,7 @@
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etPassword"
-                    android:hint="Password"
+                    android:hint="@string/password"
                     android:inputType="textPassword"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
@@ -68,14 +68,14 @@
                 android:id="@+id/btnLogin"
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
-                android:text="Log in"
+                android:text="@string/login"
                 android:textSize="16sp"
                 android:layout_marginTop="32dp"
                 app:cornerRadius="16dp"/>
 
             <TextView
                 android:id="@+id/tvGoRegister"
-                android:text="Don't have an account? Sign up"
+                android:text="@string/dont_have_account"
                 android:layout_marginTop="10dp"
                 android:gravity="center"
                 android:textSize="18sp"
