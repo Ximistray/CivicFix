@@ -4,6 +4,8 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -35,6 +37,8 @@ import com.google.firebase.storage.StorageReference;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import avik.hakobyan.civicfix.LocaleHelper;
@@ -58,6 +62,7 @@ public class ReportProblemActivity extends AppCompatActivity {
 
     private Uri imageUri;
     private double latitude = 0, longitude = 0;
+    private String region = "Unknown";
 
     private FusedLocationProviderClient locationClient;
     private FirebaseAuth mAuth;
@@ -179,11 +184,27 @@ public class ReportProblemActivity extends AppCompatActivity {
             if (location != null) {
                 latitude = location.getLatitude();
                 longitude = location.getLongitude();
+                updateRegionName(latitude, longitude);
                 tvLocation.setText(getString(R.string.location_lat_lon, latitude, longitude));
             } else {
                 Toast.makeText(this, getString(R.string.gps_error), Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void updateRegionName(double lat, double lon) {
+        Geocoder geocoder = new Geocoder(this, Locale.ENGLISH);
+        try {
+            List<Address> addresses = geocoder.getFromLocation(lat, lon, 1);
+            if (addresses != null && !addresses.isEmpty()) {
+                Address adr = addresses.get(0);
+                // AdminArea is usually the state/province/region
+                region = adr.getAdminArea() != null ? adr.getAdminArea() : "Unknown";
+                Log.d(TAG, "Detected Region: " + region);
+            }
+        } catch (IOException e) {
+            Log.e(TAG, "Geocoder error", e);
+        }
     }
 
     private void openCamera() {
@@ -262,9 +283,11 @@ public class ReportProblemActivity extends AppCompatActivity {
         
         reportData.put("latitude", latitude);
         reportData.put("longitude", longitude);
+        reportData.put("region", region);
         reportData.put("userId", userId);
         reportData.put("status", "pending");
         reportData.put("timestamp", System.currentTimeMillis());
+        reportData.put("verified", false); 
 
         if (imageUri != null) {
             StorageReference fileRef = storageRef.child("report_images/" + reportId + ".jpg");

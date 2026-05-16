@@ -6,12 +6,11 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.drawable.Drawable;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -33,6 +32,7 @@ import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -44,17 +44,21 @@ import java.util.Map;
 
 import avik.hakobyan.civicfix.LocaleHelper;
 import avik.hakobyan.civicfix.R;
+import avik.hakobyan.civicfix.model.Account;
 import avik.hakobyan.civicfix.model.Problem;
 import avik.hakobyan.civicfix.ui.main.MainActivity;
 import avik.hakobyan.civicfix.ui.main.ProfileActivity;
 import avik.hakobyan.civicfix.ui.report.MyReportsActivity;
+import avik.hakobyan.civicfix.ui.report.ReportDetailActivity;
+import avik.hakobyan.civicfix.ui.report.ReportProblemActivity;
 
 public class MapActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private static final String TAG = "MapActivity";
     private GoogleMap mMap;
     private DatabaseReference problemsRef;
-    private Map<String, Bitmap> imageCache = new HashMap<>();
+    private DatabaseReference usersRef;
+    private final Map<String, String> userNames = new HashMap<>();
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -74,6 +78,12 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         }
 
         problemsRef = FirebaseDatabase.getInstance().getReference("problems");
+        usersRef = FirebaseDatabase.getInstance().getReference("users");
+
+        FloatingActionButton fabAdd = findViewById(R.id.fabAddReport);
+        if (fabAdd != null) {
+            fabAdd.setOnClickListener(v -> startActivity(new Intent(this, ReportProblemActivity.class)));
+        }
 
         setupBottomNavigation();
     }
@@ -108,7 +118,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         mMap.getUiSettings().setCompassEnabled(true);
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED ||
-            ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             mMap.setMyLocationEnabled(true);
         }
 
@@ -123,27 +133,36 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
         mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
             @Override
-            public View getInfoWindow(@NonNull Marker marker) { return null; }
+            public View getInfoWindow(@NonNull Marker marker) {
+                return null;
+            }
 
             @Override
             public View getInfoContents(@NonNull Marker marker) {
                 View view = getLayoutInflater().inflate(R.layout.custom_info_window, null);
                 TextView title = view.findViewById(R.id.title);
                 TextView desc = view.findViewById(R.id.description);
+                TextView tvReporterName = view.findViewById(R.id.tvReporterName);
                 ImageView ivImage = view.findViewById(R.id.ivInfoImage);
 
                 Problem problem = (Problem) marker.getTag();
                 if (problem != null) {
                     title.setText(getString(getResIdForType(problem.getType())));
                     desc.setText(problem.getDescription());
+                    
+                    String reporterName = userNames.get(problem.getUserId());
+                    if (reporterName != null) {
+                        tvReporterName.setText(reporterName);
+                    } else {
+                        tvReporterName.setText("...");
+                        fetchUserName(problem.getUserId(), marker);
+                    }
 
                     if (problem.getImageUrl() != null && !problem.getImageUrl().isEmpty()) {
                         ivImage.setVisibility(View.VISIBLE);
-                        if (imageCache.containsKey(problem.getImageUrl())) {
-                            ivImage.setImageBitmap(imageCache.get(problem.getImageUrl()));
-                        } else {
-                            loadAndCacheImage(marker, problem.getImageUrl());
-                        }
+                        Glide.with(MapActivity.this)
+                                .load(problem.getImageUrl())
+                                .into(ivImage);
                     } else {
                         ivImage.setVisibility(View.GONE);
                     }
@@ -152,77 +171,66 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             }
         });
 
+        mMap.setOnInfoWindowClickListener(marker -> {
+            Problem problem = (Problem) marker.getTag();
+            if (problem != null) {
+                Intent intent = new Intent(MapActivity.this, ReportDetailActivity.class);
+                intent.putExtra("reportId", problem.getId());
+                startActivity(intent);
+            }
+        });
+
         loadProblems();
     }
 
-    private void loadAndCacheImage(Marker marker, String url) {
-        Glide.with(this)
-                .asBitmap()
-                .load(url)
-                .into(new CustomTarget<Bitmap>() {
-                    @Override
-                    public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
-                        imageCache.put(url, resource);
-                        updateMarkerIcon(marker, resource);
-                        if (marker.isInfoWindowShown()) {
-                            marker.showInfoWindow();
-                        }
+    private void fetchUserName(String userId, Marker marker) {
+        if (userId == null) return;
+        usersRef.child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Account account = snapshot.getValue(Account.class);
+                if (account != null) {
+                    userNames.put(userId, account.getName());
+                    if (marker.isInfoWindowShown()) {
+                        marker.showInfoWindow(); // Refresh info window
                     }
+                }
+            }
 
-                    @Override
-                    public void onLoadCleared(@Nullable Drawable placeholder) {}
-                });
-    }
-
-    private void updateMarkerIcon(Marker marker, Bitmap bitmap) {
-        Problem problem = (Problem) marker.getTag();
-        if (problem == null) return;
-        
-        View markerView = getLayoutInflater().inflate(R.layout.layout_marker_custom, null);
-        ImageView markerImage = markerView.findViewById(R.id.markerImage);
-        ImageView markerBackground = markerView.findViewById(R.id.markerBackground);
-
-        if (markerImage != null) {
-            markerImage.setImageBitmap(bitmap);
-        }
-
-        if (markerBackground != null) {
-            int color = getMarkerColorValue(problem.getType());
-            markerBackground.setColorFilter(color);
-        }
-
-        marker.setIcon(BitmapDescriptorFactory.fromBitmap(createDrawableFromView(markerView)));
-    }
-
-    private Bitmap createDrawableFromView(View view) {
-        view.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        view.measure(View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED), View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
-        view.layout(0, 0, view.getMeasuredWidth(), view.getMeasuredHeight());
-        Bitmap bitmap = Bitmap.createBitmap(view.getMeasuredWidth(), view.getMeasuredHeight(), Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(bitmap);
-        view.draw(canvas);
-        return bitmap;
-    }
-
-    private int getMarkerColorValue(String type) {
-        if (type == null) return 0xFFE2E8F0;
-        switch (type) {
-            case "Trash": return 0xFF4CAF50;
-            case "Broken streetlight": return 0xFFFFEB3B;
-            case "Pothole": return 0xFF2196F3;
-            case "Damaged road": return 0xFFFF9800;
-            default: return 0xFFF44336;
-        }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {}
+        });
     }
 
     private int getResIdForType(String type) {
         if (type == null) return R.string.type_other;
         switch (type) {
-            case "Pothole": return R.string.type_pothole;
-            case "Trash": return R.string.type_trash;
-            case "Broken streetlight": return R.string.type_streetlight;
-            case "Damaged road": return R.string.type_road;
-            default: return R.string.type_other;
+            case "Pothole":
+                return R.string.type_pothole;
+            case "Trash":
+                return R.string.type_trash;
+            case "Broken streetlight":
+                return R.string.type_streetlight;
+            case "Damaged road":
+                return R.string.type_road;
+            default:
+                return R.string.type_other;
+        }
+    }
+
+    private int getColorForType(String type) {
+        if (type == null) return 0xFF6C63FF; // Default Purple
+        switch (type) {
+            case "Pothole":
+                return 0xFFFF5252; // Red
+            case "Trash":
+                return 0xFF4CAF50; // Green
+            case "Broken streetlight":
+                return 0xFFFFC107; // Yellow/Amber
+            case "Damaged road":
+                return 0xFFFF9800; // Orange
+            default:
+                return 0xFF6C63FF; // Original Purple
         }
     }
 
@@ -235,27 +243,73 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
                 for (DataSnapshot problemSnapshot : snapshot.getChildren()) {
                     Problem problem = problemSnapshot.getValue(Problem.class);
-                    if (problem != null) {
+                    if (problem != null && problem.isVerified()) { // Only show verified
                         problem.setId(problemSnapshot.getKey());
-                        LatLng location = new LatLng(problem.getLatitude(), problem.getLongitude());
-
-                        Marker marker = mMap.addMarker(new MarkerOptions().position(location));
-                        if (marker != null) {
-                            marker.setTag(problem);
-                            if (problem.getImageUrl() != null && !problem.getImageUrl().isEmpty()) {
-                                if (imageCache.containsKey(problem.getImageUrl())) {
-                                    updateMarkerIcon(marker, imageCache.get(problem.getImageUrl()));
-                                } else {
-                                    loadAndCacheImage(marker, problem.getImageUrl());
-                                }
-                            }
-                        }
+                        addMarkerWithPhoto(problem);
                     }
                 }
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {}
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
         });
+    }
+
+    private void addMarkerWithPhoto(Problem problem) {
+        LatLng location = new LatLng(problem.getLatitude(), problem.getLongitude());
+        
+        Marker marker = mMap.addMarker(new MarkerOptions()
+                .position(location)
+                .title(problem.getType()));
+        
+        if (marker != null) {
+            marker.setTag(problem);
+            
+            if (problem.getImageUrl() != null && !problem.getImageUrl().isEmpty()) {
+                loadMarkerIcon(problem.getImageUrl(), marker, problem.getType());
+            }
+        }
+    }
+
+    private void loadMarkerIcon(String url, Marker marker, String type) {
+        Glide.with(this)
+                .asBitmap()
+                .load(url)
+                .override(100, 100)
+                .circleCrop()
+                .into(new CustomTarget<Bitmap>() {
+                    @Override
+                    public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                        Bitmap customMarker = createCustomMarkerBitmap(resource, getColorForType(type));
+                        if (customMarker != null) {
+                            marker.setIcon(BitmapDescriptorFactory.fromBitmap(customMarker));
+                        }
+                    }
+
+                    @Override
+                    public void onLoadCleared(@Nullable android.graphics.drawable.Drawable placeholder) {
+                    }
+                });
+    }
+
+    private Bitmap createCustomMarkerBitmap(Bitmap resource, int color) {
+        View markerView = ((LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.marker_layout, null);
+        
+        ImageView markerBackground = markerView.findViewById(R.id.marker_background);
+        markerBackground.setColorFilter(color, PorterDuff.Mode.SRC_IN);
+        
+        ImageView markerImage = markerView.findViewById(R.id.marker_image);
+        markerImage.setImageBitmap(resource);
+
+        markerView.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
+        markerView.layout(0, 0, markerView.getMeasuredWidth(), markerView.getMeasuredHeight());
+        markerView.buildDrawingCache();
+
+        Bitmap bitmap = Bitmap.createBitmap(markerView.getMeasuredWidth(), markerView.getMeasuredHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        markerView.draw(canvas);
+
+        return bitmap;
     }
 }

@@ -1,23 +1,24 @@
 package avik.hakobyan.civicfix.ui.report;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.auth.FirebaseAuth;
@@ -25,6 +26,8 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.MutableData;
+import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
@@ -35,17 +38,21 @@ import java.util.Map;
 
 import avik.hakobyan.civicfix.LocaleHelper;
 import avik.hakobyan.civicfix.R;
+import avik.hakobyan.civicfix.model.Account;
 import avik.hakobyan.civicfix.model.Problem;
 
 public class ReportDetailActivity extends AppCompatActivity {
 
-    private ImageView detailImage;
-    private TextView detailType, detailDescription, detailLocation, detailDate;
+    private ImageView detailImage, ivVoteDetail;
+    private TextView detailType, detailDescription, detailLocation, detailDate, tvVoteCountDetail;
     private Chip detailStatusChip;
-    private View layoutActions;
+    private View layoutActions, btnVoteDetail;
     private DatabaseReference reportRef;
-    private String reportId;
+    private DatabaseReference userRef;
+    private String reportId, currentUid;
     private Problem currentReport;
+    private boolean isUserAdmin = false;
+    private String lastImageUrl = "";
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -74,7 +81,29 @@ public class ReportDetailActivity extends AppCompatActivity {
 
         initViews();
         reportRef = FirebaseDatabase.getInstance().getReference("problems").child(reportId);
+        
+        currentUid = FirebaseAuth.getInstance().getUid();
+        if (currentUid != null) {
+            userRef = FirebaseDatabase.getInstance().getReference("users").child(currentUid);
+            checkAdminStatus();
+        }
+
         loadReportDetails();
+    }
+
+    private void checkAdminStatus() {
+        userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Account account = snapshot.getValue(Account.class);
+                if (account != null) {
+                    isUserAdmin = account.isAdmin();
+                    updateActionVisibility();
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {}
+        });
     }
 
     private void initViews() {
@@ -85,21 +114,75 @@ public class ReportDetailActivity extends AppCompatActivity {
         detailDate = findViewById(R.id.detailDate);
         detailStatusChip = findViewById(R.id.detailStatusChip);
         layoutActions = findViewById(R.id.layoutActions);
+        
+        btnVoteDetail = findViewById(R.id.btnVoteDetail);
+        ivVoteDetail = findViewById(R.id.ivVoteDetail);
+        tvVoteCountDetail = findViewById(R.id.tvVoteCountDetail);
 
         View btnDelete = findViewById(R.id.btnDelete);
         View btnEdit = findViewById(R.id.btnEdit);
 
         if (btnDelete != null) btnDelete.setOnClickListener(v -> confirmDelete());
         if (btnEdit != null) btnEdit.setOnClickListener(v -> showEditDialog());
+        
+        if (btnVoteDetail != null) {
+            btnVoteDetail.setOnClickListener(v -> toggleVote());
+        }
+    }
+
+    private void toggleVote() {
+        if (currentUid == null) {
+            Toast.makeText(this, R.string.login_to_like, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // Use a surgical transaction to avoid wiping data
+        reportRef.runTransaction(new Transaction.Handler() {
+            @NonNull
+            @Override
+            public Transaction.Result doTransaction(@NonNull MutableData mutableData) {
+                // IMPORTANT: Abort if data is null to prevent accidental deletion during local transaction sync
+                if (mutableData.getValue() == null) {
+                    return Transaction.abort();
+                }
+
+                Integer count = mutableData.child("voteCount").getValue(Integer.class);
+                if (count == null) count = 0;
+
+                Map<String, Object> votedUsers = (Map<String, Object>) mutableData.child("votedUsers").getValue();
+                if (votedUsers == null) votedUsers = new HashMap<>();
+
+                if (votedUsers.containsKey(currentUid)) {
+                    mutableData.child("voteCount").setValue(count - 1);
+                    votedUsers.remove(currentUid);
+                } else {
+                    mutableData.child("voteCount").setValue(count + 1);
+                    votedUsers.put(currentUid, true);
+                }
+                
+                mutableData.child("votedUsers").setValue(votedUsers);
+                return Transaction.success(mutableData);
+            }
+
+            @Override
+            public void onComplete(@Nullable DatabaseError error, boolean committed, @Nullable DataSnapshot currentData) {
+            }
+        });
     }
 
     private void loadReportDetails() {
         reportRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                currentReport = snapshot.getValue(Problem.class);
-                if (currentReport != null) {
+                Problem report = snapshot.getValue(Problem.class);
+                if (report != null) {
+                    currentReport = report;
+                    currentReport.setId(snapshot.getKey());
                     updateUI(currentReport);
+                } else if (currentReport != null) {
+                    // Only finish if the report was actually there and is now gone (not during transaction flickering)
+                    // If snapshot is null but we had a report, it might be a temporary state or actual deletion.
+                    // We check if it's verified on server usually, but for now we just handle null gracefully.
                 }
             }
 
@@ -120,14 +203,38 @@ public class ReportDetailActivity extends AppCompatActivity {
 
         setStatusChip(detailStatusChip, report.getStatus());
 
-        Glide.with(this)
-                .load(report.getImageUrl())
-                .placeholder(R.drawable.background_gradient)
-                .error(R.drawable.ic_launcher_background)
-                .into(detailImage);
+        // Prevent reloading image if URL is the same to avoid flickering
+        if (report.getImageUrl() != null && !report.getImageUrl().equals(lastImageUrl)) {
+            lastImageUrl = report.getImageUrl();
+            Glide.with(this)
+                    .load(report.getImageUrl())
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .placeholder(R.drawable.background_gradient)
+                    .error(R.drawable.ic_launcher_background)
+                    .into(detailImage);
+        }
 
+        // Update Liking UI
+        tvVoteCountDetail.setText(String.valueOf(report.getVoteCount()));
+        boolean hasVoted = currentUid != null && report.getVotedUsers() != null && report.getVotedUsers().containsKey(currentUid);
+        if (hasVoted) {
+            ivVoteDetail.setImageResource(R.drawable.ic_heart_filled);
+            ivVoteDetail.setColorFilter(ContextCompat.getColor(this, R.color.like_red));
+            tvVoteCountDetail.setTextColor(ContextCompat.getColor(this, R.color.like_red));
+        } else {
+            ivVoteDetail.setImageResource(R.drawable.ic_heart_outline);
+            ivVoteDetail.setColorFilter(ContextCompat.getColor(this, R.color.slate_grey));
+            tvVoteCountDetail.setTextColor(ContextCompat.getColor(this, R.color.slate_grey));
+        }
+
+        updateActionVisibility();
+    }
+
+    private void updateActionVisibility() {
+        if (currentReport == null) return;
         String userId = FirebaseAuth.getInstance().getUid();
-        if (userId != null && userId.equals(report.getUserId())) {
+        
+        if (isUserAdmin || (userId != null && userId.equals(currentReport.getUserId()))) {
             layoutActions.setVisibility(View.VISIBLE);
         } else {
             layoutActions.setVisibility(View.GONE);
@@ -185,7 +292,7 @@ public class ReportDetailActivity extends AppCompatActivity {
         if (currentReport == null) return;
         View view = LayoutInflater.from(this).inflate(R.layout.dialog_edit_report, null);
         EditText etDesc = view.findViewById(R.id.etEditDescription);
-        Spinner spinner = view.findViewById(R.id.spinnerEditType);
+        AutoCompleteTextView autoCompleteTextView = view.findViewById(R.id.spinnerEditType);
 
         etDesc.setText(currentReport.getDescription());
         
@@ -197,13 +304,12 @@ public class ReportDetailActivity extends AppCompatActivity {
                 getString(R.string.type_other)
         };
         
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, types);
-        spinner.setAdapter(adapter);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, types);
+        autoCompleteTextView.setAdapter(adapter);
         
-        // Set selection based on English value
-        for (int i = 0; i < types.length; i++) {
-            if (getEnglishType(types[i]).equals(currentReport.getType())) {
-                spinner.setSelection(i);
+        for (String type : types) {
+            if (getEnglishType(type).equals(currentReport.getType())) {
+                autoCompleteTextView.setText(type, false);
                 break;
             }
         }
@@ -214,7 +320,7 @@ public class ReportDetailActivity extends AppCompatActivity {
                 .setPositiveButton(R.string.save, (dialog, which) -> {
                     Map<String, Object> updates = new HashMap<>();
                     updates.put("description", etDesc.getText().toString());
-                    updates.put("type", getEnglishType(spinner.getSelectedItem().toString()));
+                    updates.put("type", getEnglishType(autoCompleteTextView.getText().toString()));
                     reportRef.updateChildren(updates);
                 })
                 .setNegativeButton(R.string.cancel, null)

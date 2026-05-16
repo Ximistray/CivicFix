@@ -55,11 +55,14 @@
     <string name="save">Պահպանել</string>
     <string name="cancel">Չեղարկել</string>
     <string name="delete">Ջնջել</string>
+    <string name="edit">Խմբագրել</string>
 
     <!-- Statuses -->
     <string name="status_pending">Սպասման մեջ</string>
     <string name="status_in_progress">Ընթացքի մեջ</string>
     <string name="status_resolved">Լուծված</string>
+    <string name="status_solved">Լուծված</string>
+    <string name="status_unsolved">Չլուծված</string>
 
     <!-- Auth Strings -->
     <string name="login">Մուտք գործել</string>
@@ -72,4 +75,44 @@
     <string name="dont_have_account">Չունե՞ք հաշիվ: Գրանցվեք</string>
     <string name="already_have_account">Արդեն ունե՞ք հաշիվ: Մուտք գործեք</string>
     <string name="creating_account">Հաշվի ստեղծում</string>
+
+    <!-- Admin Strings -->
+    <string name="admin_panel">Ադմինիստրատորի վահանակ</string>
+    <string name="admin_pending">Սպասման մեջ</string>
+    <string name="admin_all">Բոլոր հաղորդումները</string>
+    <string name="admin_no_reports">Ցուցադրվող հաղորդումներ չկան</string>
+    <string name="admin_approve">Հաստատել</string>
+    <string name="admin_control_panel">Ադմինիստրատորի կառավարման վահանակ</string>
+    <string name="admin_verified">Հաստատված է</string>
+    <string name="admin_report_approved">Հաղորդումը հաստատված է</string>
+    <string name="admin_report_deleted">Հաղորդումը ջնջված է</string>
+    <string name="admin_category">Կատեգորիա</string>
+    <string name="admin_modify_details">Փոփոխեք հաղորդման մանրամասները ստորև:</string>
+
+    <!-- Profile Strings -->
+    <string name="profile_load_failed">Չհաջողվեց բեռնել պրոֆիլը</string>
+    <string name="name_empty_error">Անունը չի կարող դատարկ լինել</string>
+    <string name="profile_updated">Պրոֆիլը հաջողությամբ թարմացվեց:</string>
+    <string name="profile_update_failed">Թարմացումը ձախողվեց</string>
+    <string name="about_info">CivicFix v1.0\nՄշակվել է Ավիկ Հակոբյանի կողմից</string>
+    <string name="privacy_coming_soon">Գաղտնիության քաղաքականությունը շուտով:</string>
+
+    <!-- Social Media Voting -->
+    <string name="support_report">Աջակցել</string>
+    <string name="login_to_like">Խնդրում ենք մուտք գործել աջակցելու համար</string>
+    <string name="supported">Աջակցված</string>
+    <string name="mark_as_solved">Նշել որպես լուծված</string>
+    <string name="solved_confirmation">Այս խնդիրը լուծվա՞ծ է:</string>
+    <string name="confirmed_solved">Դուք հաստատեցիք, որ այն լուծված է</string>
+
+    <!-- Regional Filtering -->
+    <string name="my_region">Իմ տարածաշրջանը</string>
+    <string name="all_regions">Բոլոր տարածաշրջանները</string>
+    <string name="detecting_region">Տարածաշրջանի որոշում…</string>
+
+    <!-- Search & Filter -->
+    <string name="search_hint">Փնտրել…</string>
+    <string name="filter_reports">Ֆիլտրել</string>
+    <string name="apply_filters">Կիրառել</string>
+    <string name="reset">Վերակայել</string>
 </resources>

@@ -84,13 +84,67 @@
 
                 <TextView
                     android:id="@+id/textDate"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:layout_marginStart="4dp"
                     android:text="Oct 24, 2023"
                     android:textSize="12sp"
                     android:textColor="#999999"/>
+
+                <LinearLayout
+                    android:id="@+id/llVote"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:background="?attr/selectableItemBackground"
+                    android:paddingHorizontal="8dp"
+                    android:paddingVertical="4dp">
+
+                    <ImageView
+                        android:id="@+id/ivVote"
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        android:src="@drawable/ic_heart_outline"
+                        app:tint="#64748B" />
+
+                    <TextView
+                        android:id="@+id/tvVoteCount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="6dp"
+                        android:text="0"
+                        android:textColor="#64748B"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <ImageButton
+                    android:id="@+id/btnEditReportItem"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:src="@android:drawable/ic_menu_edit"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    app:tint="#6C63FF"
+                    android:visibility="gone"
+                    android:layout_marginStart="8dp"/>
             </LinearLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnMarkSolved"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="@string/mark_as_solved"
+                android:textColor="#2E7D32"
+                android:backgroundTint="#E8F5E9"
+                app:cornerRadius="12dp"
+                android:paddingVertical="10dp"
+                app:icon="@drawable/ic_verified_modern"
+                app:iconTint="#2E7D32"
+                app:rippleColor="#C8E6C9"/>
 
         </LinearLayout>
     </LinearLayout>

@@ -13,8 +13,15 @@
         android:layout_height="100dp"
         android:layout_marginBottom="8dp"
         android:scaleType="centerCrop"
-        android:visibility="gone"
         app:shapeAppearanceOverlay="@style/ShapeAppearance.MaterialComponents.SmallComponent" />
+
+    <TextView
+        android:id="@+id/tvReporterName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#6C63FF"
+        android:textSize="12sp"
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/title"

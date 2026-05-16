@@ -1,11 +1,14 @@
 package avik.hakobyan.civicfix.model;
 
+import com.google.firebase.database.PropertyName;
+
 public class Account {
     private String uid;
     private String name;
     private String email;
     private String profileImageUrl;
     private long joinedDate;
+    private boolean isAdmin;
 
     public Account() {
         // Required for Firebase
@@ -16,6 +19,7 @@ public class Account {
         this.name = name;
         this.email = email;
         this.joinedDate = joinedDate;
+        this.isAdmin = false;
     }
 
     public String getUid() {
@@ -56,5 +60,15 @@ public class Account {
 
     public void setJoinedDate(long joinedDate) {
         this.joinedDate = joinedDate;
+    }
+
+    @PropertyName("isAdmin")
+    public boolean isAdmin() {
+        return isAdmin;
+    }
+
+    @PropertyName("isAdmin")
+    public void setAdmin(boolean admin) {
+        isAdmin = admin;
     }
 }

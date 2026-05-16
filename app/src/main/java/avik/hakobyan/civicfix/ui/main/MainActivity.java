@@ -8,6 +8,7 @@ import android.view.View;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 
 import avik.hakobyan.civicfix.LocaleHelper;
@@ -56,7 +57,13 @@ public class MainActivity extends AppCompatActivity {
             btnAllReports.setOnClickListener(v -> animateAndStart(v, AllReportsActivity.class));
         }
 
-        // 3. Setup Bottom Navigation
+        // 3. Setup Floating Action Button
+        FloatingActionButton fabAdd = findViewById(R.id.fabAddReport);
+        if (fabAdd != null) {
+            fabAdd.setOnClickListener(v -> startActivity(new Intent(this, ReportProblemActivity.class)));
+        }
+
+        // 4. Setup Bottom Navigation
         BottomNavigationView bottomNav = findViewById(R.id.bottomNavigation);
         if (bottomNav != null) {
             bottomNav.setSelectedItemId(R.id.nav_home);

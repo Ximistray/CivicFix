@@ -3,6 +3,8 @@ package avik.hakobyan.civicfix.ui.main;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -11,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
@@ -26,6 +29,7 @@ import avik.hakobyan.civicfix.model.Account;
 import avik.hakobyan.civicfix.ui.auth.LoginActivity;
 import avik.hakobyan.civicfix.ui.map.MapActivity;
 import avik.hakobyan.civicfix.ui.report.MyReportsActivity;
+import avik.hakobyan.civicfix.ui.report.ReportProblemActivity;
 
 public class ProfileActivity extends AppCompatActivity {
 
@@ -33,6 +37,7 @@ public class ProfileActivity extends AppCompatActivity {
     private DatabaseReference mDatabase;
     private TextView tvUserName, tvUserEmail;
     private EditText etProfileName;
+    private Button btnAdminPanel;
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -51,6 +56,7 @@ public class ProfileActivity extends AppCompatActivity {
         tvUserName = findViewById(R.id.tvUserName);
         tvUserEmail = findViewById(R.id.tvUserEmail);
         etProfileName = findViewById(R.id.etProfileName);
+        btnAdminPanel = findViewById(R.id.btnAdminPanel);
 
         if (user != null) {
             loadUserProfile(user.getUid());
@@ -74,6 +80,16 @@ public class ProfileActivity extends AppCompatActivity {
                 Toast.makeText(this, "Privacy Policy coming soon!", Toast.LENGTH_SHORT).show());
 
         findViewById(R.id.btnLogoutProfile).setOnClickListener(v -> logout());
+        
+        if (btnAdminPanel != null) {
+            btnAdminPanel.setOnClickListener(v -> startActivity(new Intent(this, AdminActivity.class)));
+        }
+
+        // Setup Floating Action Button
+        FloatingActionButton fabAdd = findViewById(R.id.fabAddReport);
+        if (fabAdd != null) {
+            fabAdd.setOnClickListener(v -> startActivity(new Intent(this, ReportProblemActivity.class)));
+        }
 
         setupBottomNavigation();
     }
@@ -108,6 +124,10 @@ public class ProfileActivity extends AppCompatActivity {
                     tvUserName.setText(account.getName());
                     tvUserEmail.setText(account.getEmail());
                     etProfileName.setText(account.getName());
+                    
+                    if (btnAdminPanel != null) {
+                        btnAdminPanel.setVisibility(account.isAdmin() ? View.VISIBLE : View.GONE);
+                    }
                 }
             }
 

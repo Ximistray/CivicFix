@@ -55,11 +55,14 @@
     <string name="save">Сохранить</string>
     <string name="cancel">Отмена</string>
     <string name="delete">Удалить</string>
+    <string name="edit">Изменить</string>
 
     <!-- Statuses -->
     <string name="status_pending">В ожидании</string>
     <string name="status_in_progress">В процессе</string>
     <string name="status_resolved">Решено</string>
+    <string name="status_solved">Решено</string>
+    <string name="status_unsolved">Нерешенные</string>
 
     <!-- Auth Strings -->
     <string name="login">Войти</string>
@@ -72,4 +75,44 @@
     <string name="dont_have_account">Нет аккаунта? Зарегистрироваться</string>
     <string name="already_have_account">Уже есть аккаунт? Войти</string>
     <string name="creating_account">Создание аккаунта</string>
+
+    <!-- Admin Strings -->
+    <string name="admin_panel">Панель администратора</string>
+    <string name="admin_pending">В ожидании</string>
+    <string name="admin_all">Все отчеты</string>
+    <string name="admin_no_reports">Нет отчетов для отображения</string>
+    <string name="admin_approve">Одобрить</string>
+    <string name="admin_control_panel">Панель управления администратора</string>
+    <string name="admin_verified">Подтверждено</string>
+    <string name="admin_report_approved">Отчет одобрен</string>
+    <string name="admin_report_deleted">Отчет удален</string>
+    <string name="admin_category">Категория</string>
+    <string name="admin_modify_details">Измените детали отчета ниже.</string>
+
+    <!-- Profile Strings -->
+    <string name="profile_load_failed">Не удалось загрузить профиль</string>
+    <string name="name_empty_error">Имя не может быть пустым</string>
+    <string name="profile_updated">Профиль успешно обновлен!</string>
+    <string name="profile_update_failed">Ошибка обновления</string>
+    <string name="about_info">CivicFix v1.0\nРазработано Авиком Акопяном</string>
+    <string name="privacy_coming_soon">Политика конфиденциальности скоро появится!</string>
+
+    <!-- Social Media Voting -->
+    <string name="support_report">Поддержать</string>
+    <string name="login_to_like">Пожалуйста, войдите, чтобы поддержать</string>
+    <string name="supported">Поддержано</string>
+    <string name="mark_as_solved">Отметить как решенное</string>
+    <string name="solved_confirmation">Эта проблема решена?</string>
+    <string name="confirmed_solved">Вы подтвердили, что это решено</string>
+
+    <!-- Regional Filtering -->
+    <string name="my_region">Мой регион</string>
+    <string name="all_regions">Все регионы</string>
+    <string name="detecting_region">Определение региона…</string>
+
+    <!-- Search & Filter -->
+    <string name="search_hint">Поиск проблем…</string>
+    <string name="filter_reports">Фильтр отчетов</string>
+    <string name="apply_filters">Применить</string>
+    <string name="reset">Сбросить</string>
 </resources>

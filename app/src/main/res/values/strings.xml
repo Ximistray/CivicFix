@@ -55,11 +55,14 @@
     <string name="save">Save</string>
     <string name="cancel">Cancel</string>
     <string name="delete">Delete</string>
+    <string name="edit">Edit</string>
 
     <!-- Statuses -->
     <string name="status_pending">Pending</string>
     <string name="status_in_progress">In Progress</string>
     <string name="status_resolved">Resolved</string>
+    <string name="status_solved">Solved</string>
+    <string name="status_unsolved">Unsolved</string>
 
     <!-- Auth Strings -->
     <string name="login">Log in</string>
@@ -72,4 +75,44 @@
     <string name="dont_have_account">Don\'t have an account? Sign up</string>
     <string name="already_have_account">Already have an account? Log in</string>
     <string name="creating_account">Creating an account</string>
+
+    <!-- Admin Strings -->
+    <string name="admin_panel">Admin Panel</string>
+    <string name="admin_pending">Pending</string>
+    <string name="admin_all">All Reports</string>
+    <string name="admin_no_reports">No reports to show</string>
+    <string name="admin_approve">Approve</string>
+    <string name="admin_control_panel">Admin Control Panel</string>
+    <string name="admin_verified">Verified</string>
+    <string name="admin_report_approved">Report Approved</string>
+    <string name="admin_report_deleted">Report Deleted</string>
+    <string name="admin_category">Category</string>
+    <string name="admin_modify_details">Modify the report details below.</string>
+
+    <!-- Profile Strings -->
+    <string name="profile_load_failed">Failed to load profile</string>
+    <string name="name_empty_error">Name cannot be empty</string>
+    <string name="profile_updated">Profile updated successfully!</string>
+    <string name="profile_update_failed">Update failed</string>
+    <string name="about_info">CivicFix v1.0\nDeveloped by Avik Hakobyan</string>
+    <string name="privacy_coming_soon">Privacy Policy coming soon!</string>
+
+    <!-- Social Media Voting -->
+    <string name="support_report">Support this issue</string>
+    <string name="login_to_like">Please login to support this issue</string>
+    <string name="supported">Supported</string>
+    <string name="mark_as_solved">Mark as Solved</string>
+    <string name="solved_confirmation">Is this problem solved?</string>
+    <string name="confirmed_solved">You confirmed this is solved</string>
+
+    <!-- Regional Filtering -->
+    <string name="my_region">My Region</string>
+    <string name="all_regions">All Regions</string>
+    <string name="detecting_region">Detecting region…</string>
+
+    <!-- Search & Filter -->
+    <string name="search_hint">Search problems…</string>
+    <string name="filter_reports">Filter Reports</string>
+    <string name="apply_filters">Apply Filters</string>
+    <string name="reset">Reset</string>
 </resources>

@@ -66,6 +66,10 @@
             android:exported="false" />
 
         <activity
+            android:name=".ui.main.AdminActivity"
+            android:exported="false" />
+
+        <activity
             android:name=".ui.report.ReportProblemActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustPan" />
