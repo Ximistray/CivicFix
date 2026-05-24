@@ -154,7 +154,6 @@ public class ReportsAdapter extends RecyclerView.Adapter<ReportsAdapter.ViewHold
                 if (!p.solvedConfirmations.containsKey(currentUid)) {
                     p.solvedConfirmations.put(currentUid, true);
                     
-                    // Threshold: "more than 3" means 4 or more trigger "solved"
                     if (p.solvedConfirmations.size() > 3) {
                         p.setStatus("solved");
                     }
@@ -230,6 +229,11 @@ public class ReportsAdapter extends RecyclerView.Adapter<ReportsAdapter.ViewHold
                 context.getString(R.string.type_trash),
                 context.getString(R.string.type_streetlight),
                 context.getString(R.string.type_road),
+                context.getString(R.string.type_graffiti),
+                context.getString(R.string.type_water),
+                context.getString(R.string.type_parking),
+                context.getString(R.string.type_sidewalk),
+                context.getString(R.string.type_sign),
                 context.getString(R.string.type_other)
         };
         
@@ -261,6 +265,11 @@ public class ReportsAdapter extends RecyclerView.Adapter<ReportsAdapter.ViewHold
         if (localizedType.equals(context.getString(R.string.type_trash))) return "Trash";
         if (localizedType.equals(context.getString(R.string.type_streetlight))) return "Broken streetlight";
         if (localizedType.equals(context.getString(R.string.type_road))) return "Damaged road";
+        if (localizedType.equals(context.getString(R.string.type_graffiti))) return "Graffiti";
+        if (localizedType.equals(context.getString(R.string.type_water))) return "Water Leak";
+        if (localizedType.equals(context.getString(R.string.type_parking))) return "Illegal Parking";
+        if (localizedType.equals(context.getString(R.string.type_sidewalk))) return "Sidewalk Damage";
+        if (localizedType.equals(context.getString(R.string.type_sign))) return "Damaged Sign";
         return "Other";
     }
 
@@ -271,6 +280,11 @@ public class ReportsAdapter extends RecyclerView.Adapter<ReportsAdapter.ViewHold
             case "Trash": return R.string.type_trash;
             case "Broken streetlight": return R.string.type_streetlight;
             case "Damaged road": return R.string.type_road;
+            case "Graffiti": return R.string.type_graffiti;
+            case "Water Leak": return R.string.type_water;
+            case "Illegal Parking": return R.string.type_parking;
+            case "Sidewalk Damage": return R.string.type_sidewalk;
+            case "Damaged Sign": return R.string.type_sign;
             default: return R.string.type_other;
         }
     }

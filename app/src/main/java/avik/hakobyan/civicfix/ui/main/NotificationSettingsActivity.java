@@ -12,11 +12,12 @@ import avik.hakobyan.civicfix.R;
 
 public class NotificationSettingsActivity extends AppCompatActivity {
 
-    private static final String PREFS_NAME = "CivicFixPrefs";
-    private static final String KEY_REPORT_UPDATES = "report_updates";
-    private static final String KEY_NEARBY_ALERTS = "nearby_alerts";
+    public static final String PREFS_NAME = "CivicFixPrefs";
+    public static final String KEY_REPORT_UPDATES = "report_updates";
+    public static final String KEY_NEARBY_ALERTS = "nearby_alerts";
+    public static final String KEY_COMMENT_NOTIFICATIONS = "comment_notifications";
 
-    private SwitchMaterial switchReportUpdates, switchNearbyAlerts;
+    private SwitchMaterial switchReportUpdates, switchNearbyAlerts, switchCommentNotifications;
     private SharedPreferences prefs;
 
     @Override
@@ -35,10 +36,12 @@ public class NotificationSettingsActivity extends AppCompatActivity {
 
         switchReportUpdates = findViewById(R.id.switchReportUpdates);
         switchNearbyAlerts = findViewById(R.id.switchNearbyAlerts);
+        switchCommentNotifications = findViewById(R.id.switchCommentNotifications);
 
         // Load saved preferences
         switchReportUpdates.setChecked(prefs.getBoolean(KEY_REPORT_UPDATES, true));
         switchNearbyAlerts.setChecked(prefs.getBoolean(KEY_NEARBY_ALERTS, false));
+        switchCommentNotifications.setChecked(prefs.getBoolean(KEY_COMMENT_NOTIFICATIONS, true));
 
         // Save preferences on change
         switchReportUpdates.setOnCheckedChangeListener((buttonView, isChecked) -> 
@@ -46,5 +49,8 @@ public class NotificationSettingsActivity extends AppCompatActivity {
 
         switchNearbyAlerts.setOnCheckedChangeListener((buttonView, isChecked) -> 
                 prefs.edit().putBoolean(KEY_NEARBY_ALERTS, isChecked).apply());
+                
+        switchCommentNotifications.setOnCheckedChangeListener((buttonView, isChecked) -> 
+                prefs.edit().putBoolean(KEY_COMMENT_NOTIFICATIONS, isChecked).apply());
     }
 }

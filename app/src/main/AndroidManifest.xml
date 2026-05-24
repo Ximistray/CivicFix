@@ -60,6 +60,10 @@
         <activity
             android:name=".ui.main.NotificationSettingsActivity"
             android:exported="false" />
+            
+        <activity
+            android:name=".ui.main.NotificationsActivity"
+            android:exported="false" />
 
         <activity
             android:name=".ui.main.LanguageSettingsActivity"

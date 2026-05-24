@@ -22,15 +22,39 @@
                 android:gravity="center"
                 android:orientation="vertical">
 
-                <com.google.android.material.imageview.ShapeableImageView
-                    android:id="@+id/profileImage"
-                    android:layout_width="90dp"
-                    android:layout_height="90dp"
-                    android:padding="2dp"
-                    android:src="@android:drawable/ic_menu_myplaces"
-                    app:shapeAppearanceOverlay="@style/ShapeAppearance.MaterialComponents.SmallComponent"
-                    app:strokeColor="#FFFFFF"
-                    app:strokeWidth="2dp" />
+                <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:id="@+id/profileImage"
+                        android:layout_width="90dp"
+                        android:layout_height="90dp"
+                        android:padding="2dp"
+                        android:src="@android:drawable/ic_menu_myplaces"
+                        android:scaleType="centerCrop"
+                        app:shapeAppearanceOverlay="@style/ShapeAppearance.MaterialComponents.SmallComponent"
+                        app:strokeColor="#FFFFFF"
+                        app:strokeWidth="2dp" />
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/btnChangePhoto"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:layout_gravity="bottom|end"
+                        app:cardBackgroundColor="#4A90E2"
+                        app:cardCornerRadius="16dp"
+                        app:cardElevation="2dp"
+                        app:strokeColor="#FFFFFF"
+                        app:strokeWidth="1dp">
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:padding="6dp"
+                            android:src="@android:drawable/ic_menu_camera"
+                            app:tint="#FFFFFF" />
+                    </com.google.android.material.card.MaterialCardView>
+                </FrameLayout>
 
                 <TextView
                     android:id="@+id/tvUserName"

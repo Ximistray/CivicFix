@@ -5,11 +5,17 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import avik.hakobyan.civicfix.LocaleHelper;
 import avik.hakobyan.civicfix.R;
@@ -21,6 +27,9 @@ import avik.hakobyan.civicfix.ui.report.ReportProblemActivity;
 public class MainActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
+    private DatabaseReference notificationsRef;
+    private View notificationBadge;
+    private ValueEventListener notificationListener;
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -33,12 +42,15 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         mAuth = FirebaseAuth.getInstance();
+        String currentUid = mAuth.getUid();
 
         // 1. Initialize Navigation Cards
         View btnReport = findViewById(R.id.btnReport);
         View btnMap = findViewById(R.id.btnMap);
         View btnHistory = findViewById(R.id.btnHistory);
         View btnAllReports = findViewById(R.id.btnAllReports);
+        View btnNotifications = findViewById(R.id.btnNotifications);
+        notificationBadge = findViewById(R.id.notificationBadge);
 
         // 2. Setup Card Click Listeners
         if (btnReport != null) {
@@ -55,6 +67,10 @@ public class MainActivity extends AppCompatActivity {
 
         if (btnAllReports != null) {
             btnAllReports.setOnClickListener(v -> animateAndStart(v, AllReportsActivity.class));
+        }
+        
+        if (btnNotifications != null) {
+            btnNotifications.setOnClickListener(v -> startActivity(new Intent(this, NotificationsActivity.class)));
         }
 
         // 3. Setup Floating Action Button
@@ -81,6 +97,42 @@ public class MainActivity extends AppCompatActivity {
                 }
                 return itemId == R.id.nav_home;
             });
+        }
+
+        if (currentUid != null) {
+            notificationsRef = FirebaseDatabase.getInstance().getReference("notifications").child(currentUid);
+            listenForNotifications();
+        }
+    }
+
+    private void listenForNotifications() {
+        notificationListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                boolean hasUnread = false;
+                for (DataSnapshot data : snapshot.getChildren()) {
+                    Boolean read = data.child("read").getValue(Boolean.class);
+                    if (read != null && !read) {
+                        hasUnread = true;
+                        break;
+                    }
+                }
+                if (notificationBadge != null) {
+                    notificationBadge.setVisibility(hasUnread ? View.VISIBLE : View.GONE);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {}
+        };
+        notificationsRef.addValueEventListener(notificationListener);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (notificationsRef != null && notificationListener != null) {
+            notificationsRef.removeEventListener(notificationListener);
         }
     }
 

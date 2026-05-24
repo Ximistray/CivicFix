@@ -36,14 +36,17 @@ public class SplashActivity extends AppCompatActivity {
         Animation fadeIn = AnimationUtils.loadAnimation(this, android.R.anim.fade_in);
         fadeIn.setDuration(1500);
 
-        ivLogo.startAnimation(fadeIn);
-        tvAppName.startAnimation(fadeIn);
+        if (ivLogo != null) ivLogo.startAnimation(fadeIn);
+        if (tvAppName != null) tvAppName.startAnimation(fadeIn);
 
         // 2. Delay and navigate
         new Handler(Looper.getMainLooper()).postDelayed(this::checkUserStatus, SPLASH_DELAY);
     }
 
     private void checkUserStatus() {
+        // Safety check to ensure we don't navigate if the activity was closed during the delay
+        if (isFinishing() || isDestroyed()) return;
+
         FirebaseUser currentUser = mAuth.getCurrentUser();
         
         Intent intent;

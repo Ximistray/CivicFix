@@ -20,7 +20,6 @@
     <string name="language_settings">Настройки языка</string>
     <string name="sign_out">Выйти</string>
     <string name="about_app">О CivicFix</string>
-    <string name="privacy_policy">Политика конфиденциальности</string>
     <string name="support">Поддержка</string>
 
     <!-- Report Activity Strings -->
@@ -44,6 +43,11 @@
     <string name="type_trash">Мусор</string>
     <string name="type_streetlight">Сломанный фонарь</string>
     <string name="type_road">Поврежденная дорога</string>
+    <string name="type_graffiti">Граффити</string>
+    <string name="type_water">Утечка воды</string>
+    <string name="type_parking">Незаконная парковка</string>
+    <string name="type_sidewalk">Повреждение тротуара</string>
+    <string name="type_sign">Поврежденный знак</string>
     <string name="type_other">Другое</string>
 
     <string name="no_reports">Нет отчетов</string>
@@ -95,7 +99,7 @@
     <string name="profile_updated">Профиль успешно обновлен!</string>
     <string name="profile_update_failed">Ошибка обновления</string>
     <string name="about_info">CivicFix v1.0\nРазработано Авиком Акопяном</string>
-    <string name="privacy_coming_soon">Политика конфиденциальности скоро появится!</string>
+    <string name="privacy_policy">Политика конфиденциальности</string>
 
     <!-- Social Media Voting -->
     <string name="support_report">Поддержать</string>
@@ -115,4 +119,17 @@
     <string name="filter_reports">Фильтр отчетов</string>
     <string name="apply_filters">Применить</string>
     <string name="reset">Сбросить</string>
+
+    <!-- Comments & Replies -->
+    <string name="comments_header">Комментарии</string>
+    <string name="comment_hint">Напишите комментарий...</string>
+    <string name="reply">Ответить</string>
+    <string name="replying_to">Ответ %1$s</string>
+    <string name="edit_comment">Изменить комментарий</string>
+    <string name="delete_comment">Удалить комментарий</string>
+    <string name="delete_comment_msg">Вы уверены, что хотите удалить этот комментарий?</string>
+    
+    <!-- Profile Photo -->
+    <string name="uploading_photo">Загрузка фото...</string>
+    <string name="photo_updated">Фото профиля обновлено!</string>
 </resources>

@@ -20,7 +20,6 @@
     <string name="language_settings">Լեզվի կարգավորումներ</string>
     <string name="sign_out">Դուրս գալ</string>
     <string name="about_app">CivicFix-ի մասին</string>
-    <string name="privacy_policy">Գաղտնիության քաղաքականություն</string>
     <string name="support">Աջակցություն</string>
 
     <!-- Report Activity Strings -->
@@ -44,6 +43,11 @@
     <string name="type_trash">Աղբ</string>
     <string name="type_streetlight">Կոտրված լապտեր</string>
     <string name="type_road">Վնասված ճանապարհ</string>
+    <string name="type_graffiti">Գրաֆիտի</string>
+    <string name="type_water">Ջրի արտահոսք</string>
+    <string name="type_parking">Ապօրինի կայանում</string>
+    <string name="type_sidewalk">Մայթի վնասվածք</string>
+    <string name="type_sign">Վնասված նշան</string>
     <string name="type_other">Այլ</string>
 
     <string name="no_reports">Դեռ հաղորդումներ չկան</string>
@@ -95,15 +99,15 @@
     <string name="profile_updated">Պրոֆիլը հաջողությամբ թարմացվեց:</string>
     <string name="profile_update_failed">Թարմացումը ձախողվեց</string>
     <string name="about_info">CivicFix v1.0\nՄշակվել է Ավիկ Հակոբյանի կողմից</string>
-    <string name="privacy_coming_soon">Գաղտնիության քաղաքականությունը շուտով:</string>
+    <string name="privacy_policy">Գաղտնիության քաղաքականություն</string>
 
     <!-- Social Media Voting -->
-    <string name="support_report">Աջակցել</string>
+    <string name="support_report">Աջակցել այս խնդրին</string>
     <string name="login_to_like">Խնդրում ենք մուտք գործել աջակցելու համար</string>
     <string name="supported">Աջակցված</string>
     <string name="mark_as_solved">Նշել որպես լուծված</string>
     <string name="solved_confirmation">Այս խնդիրը լուծվա՞ծ է:</string>
-    <string name="confirmed_solved">Դուք հաստատեցիք, որ այն լուծված է</string>
+    <string name="confirmed_solved">Դուք հաստատեցիք, որ սա լուծված է</string>
 
     <!-- Regional Filtering -->
     <string name="my_region">Իմ տարածաշրջանը</string>
@@ -115,4 +119,7 @@
     <string name="filter_reports">Ֆիլտրել</string>
     <string name="apply_filters">Կիրառել</string>
     <string name="reset">Վերակայել</string>
+
+    <!-- Comments & Replies -->
+    <string name="replying_to">Պատասխանել %1$s-ին</string>
 </resources>

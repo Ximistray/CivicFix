@@ -136,6 +136,11 @@ public class ReportProblemActivity extends AppCompatActivity {
                 getString(R.string.type_trash),
                 getString(R.string.type_streetlight),
                 getString(R.string.type_road),
+                getString(R.string.type_graffiti),
+                getString(R.string.type_water),
+                getString(R.string.type_parking),
+                getString(R.string.type_sidewalk),
+                getString(R.string.type_sign),
                 getString(R.string.type_other)
         };
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, types);
@@ -198,7 +203,6 @@ public class ReportProblemActivity extends AppCompatActivity {
             List<Address> addresses = geocoder.getFromLocation(lat, lon, 1);
             if (addresses != null && !addresses.isEmpty()) {
                 Address adr = addresses.get(0);
-                // AdminArea is usually the state/province/region
                 region = adr.getAdminArea() != null ? adr.getAdminArea() : "Unknown";
                 Log.d(TAG, "Detected Region: " + region);
             }
@@ -210,6 +214,10 @@ public class ReportProblemActivity extends AppCompatActivity {
     private void openCamera() {
         try {
             File storageDir = getExternalCacheDir();
+            if (storageDir == null) {
+                Toast.makeText(this, "Storage not available", Toast.LENGTH_SHORT).show();
+                return;
+            }
             File imageFile = File.createTempFile("report_", ".jpg", storageDir);
             imageUri = FileProvider.getUriForFile(this, getPackageName() + ".provider", imageFile);
             
@@ -288,6 +296,7 @@ public class ReportProblemActivity extends AppCompatActivity {
         reportData.put("status", "pending");
         reportData.put("timestamp", System.currentTimeMillis());
         reportData.put("verified", false); 
+        reportData.put("voteCount", 0);
 
         if (imageUri != null) {
             StorageReference fileRef = storageRef.child("report_images/" + reportId + ".jpg");
@@ -318,6 +327,11 @@ public class ReportProblemActivity extends AppCompatActivity {
         if (localizedType.equals(getString(R.string.type_trash))) return "Trash";
         if (localizedType.equals(getString(R.string.type_streetlight))) return "Broken streetlight";
         if (localizedType.equals(getString(R.string.type_road))) return "Damaged road";
+        if (localizedType.equals(getString(R.string.type_graffiti))) return "Graffiti";
+        if (localizedType.equals(getString(R.string.type_water))) return "Water Leak";
+        if (localizedType.equals(getString(R.string.type_parking))) return "Illegal Parking";
+        if (localizedType.equals(getString(R.string.type_sidewalk))) return "Sidewalk Damage";
+        if (localizedType.equals(getString(R.string.type_sign))) return "Damaged Sign";
         return "Other";
     }
 

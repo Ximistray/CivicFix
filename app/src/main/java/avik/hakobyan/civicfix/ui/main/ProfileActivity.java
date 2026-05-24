@@ -2,16 +2,21 @@ package avik.hakobyan.civicfix.ui.main;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
@@ -22,6 +27,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import avik.hakobyan.civicfix.LocaleHelper;
 import avik.hakobyan.civicfix.R;
@@ -35,9 +42,22 @@ public class ProfileActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
     private DatabaseReference mDatabase;
+    private StorageReference mStorage;
     private TextView tvUserName, tvUserEmail;
     private EditText etProfileName;
+    private ImageView profileImage;
     private Button btnAdminPanel;
+    private Uri selectedImageUri;
+
+    private final ActivityResultLauncher<String> imagePickerLauncher = registerForActivityResult(
+            new ActivityResultContracts.GetContent(),
+            uri -> {
+                if (uri != null) {
+                    selectedImageUri = uri;
+                    uploadProfileImage();
+                }
+            }
+    );
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -51,11 +71,13 @@ public class ProfileActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
         mDatabase = FirebaseDatabase.getInstance().getReference();
+        mStorage = FirebaseStorage.getInstance().getReference();
         FirebaseUser user = mAuth.getCurrentUser();
 
         tvUserName = findViewById(R.id.tvUserName);
         tvUserEmail = findViewById(R.id.tvUserEmail);
         etProfileName = findViewById(R.id.etProfileName);
+        profileImage = findViewById(R.id.profileImage);
         btnAdminPanel = findViewById(R.id.btnAdminPanel);
 
         if (user != null) {
@@ -63,6 +85,11 @@ public class ProfileActivity extends AppCompatActivity {
         }
 
         findViewById(R.id.btnUpdateProfile).setOnClickListener(v -> updateProfile());
+        
+        View btnChangePhoto = findViewById(R.id.btnChangePhoto);
+        if (btnChangePhoto != null) {
+            btnChangePhoto.setOnClickListener(v -> imagePickerLauncher.launch("image/*"));
+        }
 
         findViewById(R.id.btnSecurity).setOnClickListener(v -> 
                 startActivity(new Intent(this, SecuritySettingsActivity.class)));
@@ -125,6 +152,14 @@ public class ProfileActivity extends AppCompatActivity {
                     tvUserEmail.setText(account.getEmail());
                     etProfileName.setText(account.getName());
                     
+                    if (profileImage != null && account.getProfileImageUrl() != null) {
+                        Glide.with(ProfileActivity.this)
+                                .load(account.getProfileImageUrl())
+                                .circleCrop()
+                                .placeholder(android.R.drawable.ic_menu_myplaces)
+                                .into(profileImage);
+                    }
+                    
                     if (btnAdminPanel != null) {
                         btnAdminPanel.setVisibility(account.isAdmin() ? View.VISIBLE : View.GONE);
                     }
@@ -136,6 +171,34 @@ public class ProfileActivity extends AppCompatActivity {
                 Toast.makeText(ProfileActivity.this, "Failed to load profile", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void uploadProfileImage() {
+        FirebaseUser user = mAuth.getCurrentUser();
+        if (user == null || selectedImageUri == null) return;
+
+        Toast.makeText(this, R.string.uploading_photo, Toast.LENGTH_SHORT).show();
+
+        StorageReference fileRef = mStorage.child("profile_images/" + user.getUid() + ".jpg");
+        fileRef.putFile(selectedImageUri).addOnSuccessListener(taskSnapshot -> 
+            fileRef.getDownloadUrl().addOnSuccessListener(uri -> {
+                String downloadUrl = uri.toString();
+                
+                // Update Firebase Database
+                mDatabase.child("users").child(user.getUid()).child("profileImageUrl").setValue(downloadUrl);
+                
+                // Update Firebase Auth profile
+                UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                    .setPhotoUri(uri)
+                    .build();
+                
+                user.updateProfile(profileUpdates).addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        Toast.makeText(ProfileActivity.this, R.string.photo_updated, Toast.LENGTH_SHORT).show();
+                    }
+                });
+            })
+        ).addOnFailureListener(e -> Toast.makeText(this, "Upload failed: " + e.getMessage(), Toast.LENGTH_SHORT).show());
     }
 
     private void updateProfile() {
