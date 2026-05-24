@@ -73,10 +73,20 @@
                 android:layout_marginTop="32dp"
                 app:cornerRadius="16dp"/>
 
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnDemoUser"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:text="@string/demo_user"
+                android:textSize="16sp"
+                android:layout_marginTop="12dp"
+                app:cornerRadius="16dp"/>
+
             <TextView
                 android:id="@+id/tvGoRegister"
                 android:text="@string/dont_have_account"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="20dp"
                 android:gravity="center"
                 android:textSize="18sp"
                 android:textColor="#4A90E2"

@@ -80,6 +80,7 @@
     <string name="dont_have_account">Don\'t have an account? Sign up</string>
     <string name="already_have_account">Already have an account? Log in</string>
     <string name="creating_account">Creating an account</string>
+    <string name="demo_user">Demo User</string>
 
     <!-- Admin Strings -->
     <string name="admin_panel">Admin Panel</string>

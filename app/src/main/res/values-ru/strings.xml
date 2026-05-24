@@ -79,6 +79,7 @@
     <string name="dont_have_account">Нет аккаунта? Зарегистрироваться</string>
     <string name="already_have_account">Уже есть аккаунт? Войти</string>
     <string name="creating_account">Создание аккаунта</string>
+    <string name="demo_user">Демо-вход</string>
 
     <!-- Admin Strings -->
     <string name="admin_panel">Панель администратора</string>
