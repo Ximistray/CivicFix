@@ -1,5 +1,6 @@
 package avik.hakobyan.civicfix.model;
 
+import com.google.firebase.database.Exclude;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -13,6 +14,7 @@ public class Comment {
     private String parentCommentId; // null if it's a top-level comment
     private int likeCount = 0;
     private Map<String, Boolean> likedUsers = new HashMap<>();
+    private int depth = 0; // Stored in DB to handle threading and visibility limits
 
     public Comment() {
         // Required for Firebase
@@ -53,4 +55,7 @@ public class Comment {
 
     public Map<String, Boolean> getLikedUsers() { return likedUsers; }
     public void setLikedUsers(Map<String, Boolean> likedUsers) { this.likedUsers = likedUsers; }
+
+    public int getDepth() { return depth; }
+    public void setDepth(int depth) { this.depth = depth; }
 }

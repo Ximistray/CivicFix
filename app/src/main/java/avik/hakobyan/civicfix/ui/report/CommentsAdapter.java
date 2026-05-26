@@ -68,11 +68,17 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHo
                 .circleCrop()
                 .into(holder.ivUser);
 
-        holder.btnReply.setOnClickListener(v -> {
-            if (actionListener != null) {
-                actionListener.onReplyClick(comment);
-            }
-        });
+        // Limit replying to comments at depth 2 to prevent deeper hidden threads
+        if (comment.getDepth() < 2) {
+            holder.btnReply.setVisibility(View.VISIBLE);
+            holder.btnReply.setOnClickListener(v -> {
+                if (actionListener != null) {
+                    actionListener.onReplyClick(comment);
+                }
+            });
+        } else {
+            holder.btnReply.setVisibility(View.GONE);
+        }
 
         // Like logic
         holder.tvLikeCount.setText(String.valueOf(comment.getLikeCount()));
@@ -117,12 +123,9 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHo
             holder.btnMore.setVisibility(View.GONE);
         }
 
-        // Add indentation for replies
-        if (comment.getParentCommentId() != null) {
-            holder.itemView.setPadding(64, holder.itemView.getPaddingTop(), holder.itemView.getPaddingRight(), holder.itemView.getPaddingBottom());
-        } else {
-            holder.itemView.setPadding(0, holder.itemView.getPaddingTop(), holder.itemView.getPaddingRight(), holder.itemView.getPaddingBottom());
-        }
+        // Add indentation based on depth (max 2 levels)
+        int paddingStart = comment.getDepth() * 48; // 48dp per level
+        holder.itemView.setPadding(paddingStart, holder.itemView.getPaddingTop(), holder.itemView.getPaddingRight(), holder.itemView.getPaddingBottom());
     }
 
     @Override

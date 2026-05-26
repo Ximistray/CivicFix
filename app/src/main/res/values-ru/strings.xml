@@ -129,6 +129,8 @@
     <string name="edit_comment">Изменить комментарий</string>
     <string name="delete_comment">Удалить комментарий</string>
     <string name="delete_comment_msg">Вы уверены, что хотите удалить этот комментарий?</string>
+    <string name="notif_replied">ответил(а): %1$s</string>
+    <string name="notif_commented">прокомментировал(а): %1$s</string>
     
     <!-- Profile Photo -->
     <string name="uploading_photo">Загрузка фото...</string>

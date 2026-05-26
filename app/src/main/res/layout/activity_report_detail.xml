@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F5F7FA">
+    android:background="?android:attr/colorBackground">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBar"
@@ -65,7 +65,7 @@
                     android:text="Pothole"
                     android:textSize="24sp"
                     android:textStyle="bold"
-                    android:textColor="#333333"/>
+                    android:textColor="?android:attr/textColorPrimary"/>
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/detailStatusChip"
@@ -82,7 +82,7 @@
                 android:layout_height="wrap_content"
                 android:text="Detailed description of the problem goes here..."
                 android:textSize="16sp"
-                android:textColor="#666666"
+                android:textColor="?android:attr/textColorSecondary"
                 android:lineSpacingExtra="4dp"
                 android:layout_marginBottom="24dp"/>
 
@@ -93,7 +93,7 @@
                 android:layout_marginBottom="24dp"
                 app:cardCornerRadius="16dp"
                 app:cardElevation="0dp"
-                app:strokeColor="#E2E8F0"
+                app:strokeColor="?attr/dividerHorizontal"
                 app:strokeWidth="1dp">
 
                 <LinearLayout
@@ -112,7 +112,7 @@
                         android:layout_width="28dp"
                         android:layout_height="28dp"
                         android:src="@drawable/ic_heart_outline"
-                        app:tint="#64748B" />
+                        app:tint="?android:attr/textColorTertiary" />
 
                     <TextView
                         android:id="@+id/tvLikeLabel"
@@ -120,7 +120,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="12dp"
                         android:text="@string/support_report"
-                        android:textColor="#1E293B"
+                        android:textColor="?android:attr/textColorPrimary"
                         android:textSize="16sp"
                         android:textStyle="bold" />
 
@@ -128,14 +128,14 @@
                         android:layout_width="1dp"
                         android:layout_height="24dp"
                         android:layout_marginHorizontal="16dp"
-                        android:background="#E2E8F0" />
+                        android:background="?attr/dividerHorizontal" />
 
                     <TextView
                         android:id="@+id/tvVoteCountDetail"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="0"
-                        android:textColor="#64748B"
+                        android:textColor="?android:attr/textColorSecondary"
                         android:textSize="18sp"
                         android:textStyle="bold" />
                 </LinearLayout>
@@ -163,7 +163,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="12dp"
                     android:text="Lat: 0.0, Lng: 0.0"
-                    android:textColor="#555555"/>
+                    android:textColor="?android:attr/textColorSecondary"/>
             </LinearLayout>
 
             <LinearLayout
@@ -183,7 +183,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="12dp"
                     android:text="October 24, 2023"
-                    android:textColor="#555555"/>
+                    android:textColor="?android:attr/textColorSecondary"/>
             </LinearLayout>
 
             <LinearLayout
@@ -221,7 +221,7 @@
                 android:text="@string/comments_header"
                 android:textSize="20sp"
                 android:textStyle="bold"
-                android:textColor="#333333"
+                android:textColor="?android:attr/textColorPrimary"
                 android:layout_marginBottom="16dp"/>
 
             <!-- Comment Input -->
@@ -251,7 +251,7 @@
                         android:layout_height="wrap_content"
                         android:hint="@string/comment_hint"
                         android:padding="12dp"
-                        android:background="#FFFFFF"
+                        android:background="@drawable/comment_background"
                         android:minHeight="48dp"
                         android:maxLines="4"/>
                 </com.google.android.material.textfield.TextInputLayout>
@@ -283,13 +283,15 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="Replying to user"
+                    android:textColor="?android:attr/textColorSecondary"
                     android:textSize="12sp"/>
                 <ImageButton
                     android:id="@+id/btnCancelReply"
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:background="?attr/selectableItemBackgroundBorderless"
-                    android:src="@android:drawable/ic_menu_close_clear_cancel"/>
+                    android:src="@android:drawable/ic_menu_close_clear_cancel"
+                    app:tint="?android:attr/textColorSecondary"/>
             </LinearLayout>
 
             <!-- Comments List -->

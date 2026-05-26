@@ -286,36 +286,45 @@ public class ReportDetailActivity extends AppCompatActivity {
 
             if (selectedReplyToComment != null) {
                 comment.setParentCommentId(selectedReplyToComment.getId());
+                comment.setDepth(selectedReplyToComment.getDepth() + 1);
+            } else {
+                comment.setDepth(0);
             }
 
             commentsRef.child(commentId).setValue(comment).addOnSuccessListener(aVoid -> {
                 etComment.setText("");
-                cancelReplyOrEdit();
-                if (currentReport != null && !currentUid.equals(currentReport.getUserId())) {
-                    sendNotificationToOwner(text);
+                if (selectedReplyToComment != null) {
+                    // Notify parent comment author if they're not the replier
+                    if (!currentUid.equals(selectedReplyToComment.getUserId())) {
+                        sendNotificationToUser(selectedReplyToComment.getUserId(), "replied to your comment: " + text);
+                    }
+                } else if (currentReport != null && !currentUid.equals(currentReport.getUserId())) {
+                    // Notify report owner if they're not the commenter
+                    sendNotificationToUser(currentReport.getUserId(), "commented: " + text);
                 }
+                cancelReplyOrEdit();
             });
         }
     }
 
-    private void sendNotificationToOwner(String commentText) {
-        DatabaseReference ownerSettingsRef = FirebaseDatabase.getInstance().getReference("users")
-                .child(currentReport.getUserId()).child("settings");
+    private void sendNotificationToUser(String targetUserId, String message) {
+        DatabaseReference userSettingsRef = FirebaseDatabase.getInstance().getReference("users")
+                .child(targetUserId).child("settings");
                 
-        ownerSettingsRef.child("commentNotifications").addListenerForSingleValueEvent(new ValueEventListener() {
+        userSettingsRef.child("commentNotifications").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 Boolean enabled = snapshot.getValue(Boolean.class);
                 if (enabled == null || enabled) {
                     DatabaseReference notifRef = FirebaseDatabase.getInstance().getReference("notifications")
-                            .child(currentReport.getUserId());
+                            .child(targetUserId);
                     String notifId = notifRef.push().getKey();
                     if (notifId != null) {
                         Notification notification = new Notification(
                                 notifId,
                                 currentUid,
                                 currentUserAccount.getName(),
-                                "commented: " + commentText,
+                                message,
                                 reportId,
                                 System.currentTimeMillis()
                         );
@@ -341,22 +350,19 @@ public class ReportDetailActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 commentList.clear();
                 List<Comment> topLevel = new ArrayList<>();
-                Map<String, List<Comment>> replies = new HashMap<>();
+                Map<String, List<Comment>> repliesMap = new HashMap<>();
 
                 for (DataSnapshot data : snapshot.getChildren()) {
                     Comment comment = data.getValue(Comment.class);
-                    if (comment != null) {
+                    if (comment != null && comment.getDepth() <= 2) {
                         if (comment.getParentCommentId() == null) {
                             topLevel.add(comment);
                         } else {
                             String parentId = comment.getParentCommentId();
-                            if (!replies.containsKey(parentId)) {
-                                replies.put(parentId, new ArrayList<>());
+                            if (!repliesMap.containsKey(parentId)) {
+                                repliesMap.put(parentId, new ArrayList<>());
                             }
-                            List<Comment> replyList = replies.get(parentId);
-                            if (replyList != null) {
-                                replyList.add(comment);
-                            }
+                            repliesMap.get(parentId).add(comment);
                         }
                     }
                 }
@@ -364,13 +370,9 @@ public class ReportDetailActivity extends AppCompatActivity {
                 topLevel.sort((a, b) -> Long.compare(a.getTimestamp(), b.getTimestamp()));
 
                 for (Comment parent : topLevel) {
-                    commentList.add(parent);
-                    List<Comment> parentReplies = replies.get(parent.getId());
-                    if (parentReplies != null) {
-                        parentReplies.sort((a, b) -> Long.compare(a.getTimestamp(), b.getTimestamp()));
-                        commentList.addAll(parentReplies);
-                    }
+                    addCommentWithReplies(parent, repliesMap);
                 }
+                
                 if (commentsAdapter != null) {
                     commentsAdapter.notifyDataSetChanged();
                 }
@@ -379,6 +381,17 @@ public class ReportDetailActivity extends AppCompatActivity {
             @Override
             public void onCancelled(@NonNull DatabaseError error) {}
         });
+    }
+
+    private void addCommentWithReplies(Comment parent, Map<String, List<Comment>> repliesMap) {
+        commentList.add(parent);
+        List<Comment> replies = repliesMap.get(parent.getId());
+        if (replies != null) {
+            replies.sort((a, b) -> Long.compare(a.getTimestamp(), b.getTimestamp()));
+            for (Comment reply : replies) {
+                addCommentWithReplies(reply, repliesMap);
+            }
+        }
     }
 
     private void toggleVote() {

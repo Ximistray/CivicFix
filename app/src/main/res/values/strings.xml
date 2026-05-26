@@ -129,6 +129,8 @@
     <string name="edit_comment">Edit Comment</string>
     <string name="delete_comment">Delete Comment</string>
     <string name="delete_comment_msg">Are you sure you want to delete this comment?</string>
+    <string name="notif_replied">replied: %1$s</string>
+    <string name="notif_commented">commented: %1$s</string>
     
     <!-- Profile Photo -->
     <string name="uploading_photo">Uploading photo...</string>
