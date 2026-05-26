@@ -123,9 +123,14 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHo
             holder.btnMore.setVisibility(View.GONE);
         }
 
-        // Add indentation based on depth (max 2 levels)
-        int paddingStart = comment.getDepth() * 48; // 48dp per level
-        holder.itemView.setPadding(paddingStart, holder.itemView.getPaddingTop(), holder.itemView.getPaddingRight(), holder.itemView.getPaddingBottom());
+        // Thread lines logic
+        int depth = comment.getDepth();
+        holder.lineDepth1.setVisibility(depth >= 1 ? View.VISIBLE : View.GONE);
+        holder.lineDepth2.setVisibility(depth >= 2 ? View.VISIBLE : View.GONE);
+        holder.lineHorizontal.setVisibility(depth > 0 ? View.VISIBLE : View.GONE);
+
+        // Adjust visibility of vertical lines if it's the last child in a thread (optional but complex)
+        // For now, we'll keep them simple.
     }
 
     @Override
@@ -136,7 +141,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHo
     public static class ViewHolder extends RecyclerView.ViewHolder {
         ImageView ivUser, btnMore, ivLike;
         TextView tvUserName, tvText, tvTime, btnReply, tvLikeCount;
-        View btnLike;
+        View btnLike, lineDepth1, lineDepth2, lineHorizontal;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -149,6 +154,10 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHo
             ivLike = itemView.findViewById(R.id.ivLikeComment);
             tvLikeCount = itemView.findViewById(R.id.tvLikeCommentCount);
             btnLike = itemView.findViewById(R.id.btnLikeComment);
+            
+            lineDepth1 = itemView.findViewById(R.id.lineDepth1);
+            lineDepth2 = itemView.findViewById(R.id.lineDepth2);
+            lineHorizontal = itemView.findViewById(R.id.lineHorizontal);
         }
     }
 }

@@ -3,137 +3,170 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:paddingVertical="8dp">
+    android:orientation="horizontal">
+
+    <!-- Thread Lines -->
+    <View
+        android:id="@+id/lineDepth1"
+        android:layout_width="2dp"
+        android:layout_height="match_parent"
+        android:layout_marginStart="24dp"
+        android:background="#CBD5E0"
+        android:visibility="gone" />
+
+    <View
+        android:id="@+id/lineDepth2"
+        android:layout_width="2dp"
+        android:layout_height="match_parent"
+        android:layout_marginStart="24dp"
+        android:background="#CBD5E0"
+        android:visibility="gone" />
+
+    <View
+        android:id="@+id/lineHorizontal"
+        android:layout_width="12dp"
+        android:layout_height="2dp"
+        android:layout_marginTop="28dp"
+        android:background="#CBD5E0"
+        android:visibility="gone" />
 
     <LinearLayout
-        android:id="@+id/commentContainer"
+        android:id="@+id/commentMainLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/ivCommentUser"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/ic_launcher_background"
-            app:shapeAppearanceOverlay="@style/ShapeAppearance.MaterialComponents.SmallComponent"
-            app:strokeColor="#E2E8F0"
-            app:strokeWidth="1dp" />
+        android:orientation="vertical"
+        android:paddingVertical="8dp"
+        android:paddingStart="8dp"
+        android:paddingEnd="16dp">
 
         <LinearLayout
-            android:layout_width="0dp"
+            android:id="@+id/commentContainer"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
-            android:layout_weight="1"
-            android:orientation="vertical"
-            android:background="@drawable/comment_background"
-            android:padding="12dp">
+            android:orientation="horizontal">
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/ivCommentUser"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_launcher_background"
+                app:shapeAppearanceOverlay="@style/ShapeAppearance.MaterialComponents.SmallComponent"
+                app:strokeColor="#E2E8F0"
+                app:strokeWidth="1dp" />
 
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical">
+                android:layout_marginStart="12dp"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:background="@drawable/comment_background"
+                android:padding="12dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        android:id="@+id/tvCommentUserName"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="User Name"
+                        android:textColor="?android:attr/textColorPrimary"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                    <ImageView
+                        android:id="@+id/btnCommentMore"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:padding="4dp"
+                        android:src="@android:drawable/ic_menu_more"
+                        android:contentDescription="More options"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:visibility="gone"
+                        app:tint="?android:attr/textColorSecondary" />
+                </LinearLayout>
 
                 <TextView
-                    android:id="@+id/tvCommentUserName"
-                    android:layout_width="0dp"
+                    android:id="@+id/tvCommentText"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="User Name"
-                    android:textColor="?android:attr/textColorPrimary"
-                    android:textSize="14sp"
-                    android:textStyle="bold" />
-
-                <ImageView
-                    android:id="@+id/btnCommentMore"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:padding="4dp"
-                    android:src="@android:drawable/ic_menu_more"
-                    android:contentDescription="More options"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:visibility="gone"
-                    app:tint="?android:attr/textColorSecondary" />
+                    android:layout_marginTop="4dp"
+                    android:text="This is a comment text."
+                    android:textColor="?android:attr/textColorSecondary"
+                    android:textSize="14sp" />
             </LinearLayout>
-
-            <TextView
-                android:id="@+id/tvCommentText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:text="This is a comment text."
-                android:textColor="?android:attr/textColorSecondary"
-                android:textSize="14sp" />
         </LinearLayout>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
-        android:layout_marginStart="52dp"
-        android:layout_marginTop="4dp">
-
-        <TextView
-            android:id="@+id/tvCommentTime"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="2h ago"
-            android:textColor="?android:attr/textColorTertiary"
-            android:textSize="12sp" />
-
-        <View
-            android:layout_width="16dp"
-            android:layout_height="0dp" />
 
         <LinearLayout
-            android:id="@+id/btnLikeComment"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:background="?attr/selectableItemBackground"
-            android:paddingHorizontal="4dp"
-            android:paddingVertical="2dp">
-
-            <ImageView
-                android:id="@+id/ivLikeComment"
-                android:layout_width="14dp"
-                android:layout_height="14dp"
-                android:src="@drawable/ic_heart_outline"
-                app:tint="?android:attr/textColorTertiary" />
+            android:layout_marginStart="52dp"
+            android:layout_marginTop="4dp">
 
             <TextView
-                android:id="@+id/tvLikeCommentCount"
+                android:id="@+id/tvCommentTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
-                android:text="0"
+                android:text="2h ago"
                 android:textColor="?android:attr/textColorTertiary"
                 android:textSize="12sp" />
+
+            <View
+                android:layout_width="16dp"
+                android:layout_height="0dp" />
+
+            <LinearLayout
+                android:id="@+id/btnLikeComment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:background="?attr/selectableItemBackground"
+                android:paddingHorizontal="4dp"
+                android:paddingVertical="2dp">
+
+                <ImageView
+                    android:id="@+id/ivLikeComment"
+                    android:layout_width="14dp"
+                    android:layout_height="14dp"
+                    android:src="@drawable/ic_heart_outline"
+                    app:tint="?android:attr/textColorTertiary" />
+
+                <TextView
+                    android:id="@+id/tvLikeCommentCount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:text="0"
+                    android:textColor="?android:attr/textColorTertiary"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="16dp"
+                android:layout_height="0dp" />
+
+            <TextView
+                android:id="@+id/btnReply"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/reply"
+                android:textColor="#4A90E2"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:paddingHorizontal="8dp"
+                android:paddingVertical="4dp"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"/>
         </LinearLayout>
-
-        <View
-            android:layout_width="16dp"
-            android:layout_height="0dp" />
-
-        <TextView
-            android:id="@+id/btnReply"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/reply"
-            android:textColor="#4A90E2"
-            android:textSize="12sp"
-            android:textStyle="bold"
-            android:paddingHorizontal="8dp"
-            android:paddingVertical="4dp"
-            android:background="?attr/selectableItemBackground"
-            android:clickable="true"
-            android:focusable="true"/>
     </LinearLayout>
-
 </LinearLayout>

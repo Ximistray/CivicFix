@@ -111,9 +111,11 @@ public class ReportDetailActivity extends AppCompatActivity {
     }
 
     private void loadCurrentUserAccount() {
+        if (userRef == null) return;
         userRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (isFinishing() || isDestroyed()) return;
                 currentUserAccount = snapshot.getValue(Account.class);
             }
             @Override
@@ -122,9 +124,11 @@ public class ReportDetailActivity extends AppCompatActivity {
     }
 
     private void checkAdminStatus() {
+        if (userRef == null) return;
         userRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (isFinishing() || isDestroyed()) return;
                 Account account = snapshot.getValue(Account.class);
                 if (account != null) {
                     isUserAdmin = account.isAdmin();
@@ -182,20 +186,24 @@ public class ReportDetailActivity extends AppCompatActivity {
             public void onReplyClick(Comment comment) {
                 cancelReplyOrEdit();
                 selectedReplyToComment = comment;
-                replyIndicatorLayout.setVisibility(View.VISIBLE);
-                tvReplyTo.setText(getString(R.string.replying_to, comment.getUserName()));
-                etComment.requestFocus();
+                if (replyIndicatorLayout != null) replyIndicatorLayout.setVisibility(View.VISIBLE);
+                if (tvReplyTo != null) tvReplyTo.setText(getString(R.string.replying_to, comment.getUserName()));
+                if (etComment != null) {
+                    etComment.requestFocus();
+                }
             }
 
             @Override
             public void onEditClick(Comment comment) {
                 cancelReplyOrEdit();
                 editingComment = comment;
-                replyIndicatorLayout.setVisibility(View.VISIBLE);
-                tvReplyTo.setText(getString(R.string.edit_comment));
-                etComment.setText(comment.getText());
-                etComment.requestFocus();
-                etComment.setSelection(etComment.getText().length());
+                if (replyIndicatorLayout != null) replyIndicatorLayout.setVisibility(View.VISIBLE);
+                if (tvReplyTo != null) tvReplyTo.setText(getString(R.string.edit_comment));
+                if (etComment != null) {
+                    etComment.setText(comment.getText());
+                    etComment.requestFocus();
+                    etComment.setSelection(etComment.getText().length());
+                }
             }
 
             @Override
@@ -258,8 +266,10 @@ public class ReportDetailActivity extends AppCompatActivity {
     }
 
     private void sendOrUpdateComment() {
+        if (etComment == null) return;
         String text = etComment.getText().toString().trim();
         if (text.isEmpty()) return;
+        
         if (currentUid == null || currentUserAccount == null) {
             Toast.makeText(this, "Please log in to comment", Toast.LENGTH_SHORT).show();
             return;
@@ -268,6 +278,7 @@ public class ReportDetailActivity extends AppCompatActivity {
         if (editingComment != null) {
             commentsRef.child(editingComment.getId()).child("text").setValue(text)
                     .addOnSuccessListener(aVoid -> {
+                        if (isFinishing() || isDestroyed()) return;
                         etComment.setText("");
                         cancelReplyOrEdit();
                     });
@@ -291,16 +302,20 @@ public class ReportDetailActivity extends AppCompatActivity {
                 comment.setDepth(0);
             }
 
+            // Capture context values before async call
+            final Comment replyTo = selectedReplyToComment;
+            final String reportOwnerId = currentReport != null ? currentReport.getUserId() : null;
+
             commentsRef.child(commentId).setValue(comment).addOnSuccessListener(aVoid -> {
+                if (isFinishing() || isDestroyed()) return;
                 etComment.setText("");
-                if (selectedReplyToComment != null) {
-                    // Notify parent comment author if they're not the replier
-                    if (!currentUid.equals(selectedReplyToComment.getUserId())) {
-                        sendNotificationToUser(selectedReplyToComment.getUserId(), "replied to your comment: " + text);
+                
+                if (replyTo != null) {
+                    if (!currentUid.equals(replyTo.getUserId())) {
+                        sendNotificationToUser(replyTo.getUserId(), "replied to your comment: " + text);
                     }
-                } else if (currentReport != null && !currentUid.equals(currentReport.getUserId())) {
-                    // Notify report owner if they're not the commenter
-                    sendNotificationToUser(currentReport.getUserId(), "commented: " + text);
+                } else if (reportOwnerId != null && !currentUid.equals(reportOwnerId)) {
+                    sendNotificationToUser(reportOwnerId, "commented: " + text);
                 }
                 cancelReplyOrEdit();
             });
@@ -308,18 +323,20 @@ public class ReportDetailActivity extends AppCompatActivity {
     }
 
     private void sendNotificationToUser(String targetUserId, String message) {
+        if (targetUserId == null) return;
         DatabaseReference userSettingsRef = FirebaseDatabase.getInstance().getReference("users")
                 .child(targetUserId).child("settings");
                 
         userSettingsRef.child("commentNotifications").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (isFinishing() || isDestroyed()) return;
                 Boolean enabled = snapshot.getValue(Boolean.class);
                 if (enabled == null || enabled) {
                     DatabaseReference notifRef = FirebaseDatabase.getInstance().getReference("notifications")
                             .child(targetUserId);
                     String notifId = notifRef.push().getKey();
-                    if (notifId != null) {
+                    if (notifId != null && currentUserAccount != null) {
                         Notification notification = new Notification(
                                 notifId,
                                 currentUid,
@@ -340,14 +357,15 @@ public class ReportDetailActivity extends AppCompatActivity {
     private void cancelReplyOrEdit() {
         selectedReplyToComment = null;
         editingComment = null;
-        replyIndicatorLayout.setVisibility(View.GONE);
-        etComment.setText("");
+        if (replyIndicatorLayout != null) replyIndicatorLayout.setVisibility(View.GONE);
+        if (etComment != null) etComment.setText("");
     }
 
     private void loadComments() {
         commentsRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (isFinishing() || isDestroyed()) return;
                 commentList.clear();
                 List<Comment> topLevel = new ArrayList<>();
                 Map<String, List<Comment>> repliesMap = new HashMap<>();
@@ -384,6 +402,7 @@ public class ReportDetailActivity extends AppCompatActivity {
     }
 
     private void addCommentWithReplies(Comment parent, Map<String, List<Comment>> repliesMap) {
+        if (parent == null || commentList.contains(parent)) return;
         commentList.add(parent);
         List<Comment> replies = repliesMap.get(parent.getId());
         if (replies != null) {
