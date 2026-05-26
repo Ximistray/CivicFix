@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F8FAFC">
+    android:background="#121212">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBar"
@@ -42,7 +42,7 @@
                         android:layout_width="32dp"
                         android:layout_height="32dp"
                         android:layout_gravity="bottom|end"
-                        app:cardBackgroundColor="#4A90E2"
+                        app:cardBackgroundColor="#6C63FF"
                         app:cardCornerRadius="16dp"
                         app:cardElevation="2dp"
                         app:strokeColor="#FFFFFF"
@@ -112,7 +112,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
                 android:text="@string/account_personalization"
-                android:textColor="#1E293B"
+                android:textColor="#FFFFFF"
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
@@ -120,9 +120,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="24dp"
+                app:cardBackgroundColor="#1E1E1E"
                 app:cardCornerRadius="16dp"
                 app:cardElevation="0dp"
-                app:strokeColor="#E2E8F0"
+                app:strokeColor="#334155"
                 app:strokeWidth="1dp">
 
                 <LinearLayout
@@ -135,11 +136,15 @@
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/full_name">
+                        android:hint="@string/full_name"
+                        android:textColorHint="#B0B0B0"
+                        app:hintTextColor="#6C63FF"
+                        app:boxStrokeColor="#6C63FF">
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/etProfileName"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content" />
+                            android:layout_height="wrap_content"
+                            android:textColor="#FFFFFF" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.button.MaterialButton
@@ -148,7 +153,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
                         android:text="@string/update_name"
-                        app:cornerRadius="8dp" />
+                        app:cornerRadius="8dp"
+                        app:backgroundTint="#6C63FF" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
@@ -157,16 +163,17 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
                 android:text="@string/app_settings"
-                android:textColor="#1E293B"
+                android:textColor="#FFFFFF"
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                app:cardBackgroundColor="#1E1E1E"
                 app:cardCornerRadius="16dp"
                 app:cardElevation="0dp"
-                app:strokeColor="#E2E8F0"
+                app:strokeColor="#334155"
                 app:strokeWidth="1dp">
 
                 <LinearLayout
@@ -188,7 +195,7 @@
                             android:layout_width="24dp"
                             android:layout_height="24dp"
                             android:src="@android:drawable/ic_lock_idle_lock"
-                            app:tint="#4A90E2" />
+                            app:tint="#6C63FF" />
 
                         <TextView
                             android:layout_width="0dp"
@@ -196,18 +203,19 @@
                             android:layout_marginStart="16dp"
                             android:layout_weight="1"
                             android:text="@string/security_password"
-                            android:textColor="#334155" />
+                            android:textColor="#FFFFFF" />
 
                         <ImageView
                             android:layout_width="16dp"
                             android:layout_height="16dp"
                             android:src="@android:drawable/ic_media_next"
-                            app:tint="#CBD5E1" />
+                            app:tint="#B0B0B0" />
                     </LinearLayout>
 
                     <com.google.android.material.divider.MaterialDivider
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        app:dividerColor="#334155" />
 
                     <LinearLayout
                         android:id="@+id/btnNotifications"
@@ -223,7 +231,7 @@
                             android:layout_width="24dp"
                             android:layout_height="24dp"
                             android:src="@android:drawable/ic_popup_reminder"
-                            app:tint="#4A90E2" />
+                            app:tint="#6C63FF" />
 
                         <TextView
                             android:layout_width="0dp"
@@ -231,18 +239,19 @@
                             android:layout_marginStart="16dp"
                             android:layout_weight="1"
                             android:text="@string/notification_settings"
-                            android:textColor="#334155" />
+                            android:textColor="#FFFFFF" />
 
                         <ImageView
                             android:layout_width="16dp"
                             android:layout_height="16dp"
                             android:src="@android:drawable/ic_media_next"
-                            app:tint="#CBD5E1" />
+                            app:tint="#B0B0B0" />
                     </LinearLayout>
 
                     <com.google.android.material.divider.MaterialDivider
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        app:dividerColor="#334155" />
 
                     <LinearLayout
                         android:id="@+id/btnLanguage"
@@ -258,7 +267,7 @@
                             android:layout_width="24dp"
                             android:layout_height="24dp"
                             android:src="@android:drawable/ic_menu_sort_alphabetically"
-                            app:tint="#4A90E2" />
+                            app:tint="#6C63FF" />
 
                         <TextView
                             android:layout_width="0dp"
@@ -266,13 +275,13 @@
                             android:layout_marginStart="16dp"
                             android:layout_weight="1"
                             android:text="@string/language_settings"
-                            android:textColor="#334155" />
+                            android:textColor="#FFFFFF" />
 
                         <ImageView
                             android:layout_width="16dp"
                             android:layout_height="16dp"
                             android:src="@android:drawable/ic_media_next"
-                            app:tint="#CBD5E1" />
+                            app:tint="#B0B0B0" />
                     </LinearLayout>
 
                 </LinearLayout>
@@ -284,16 +293,17 @@
                 android:layout_marginTop="24dp"
                 android:layout_marginBottom="16dp"
                 android:text="Support"
-                android:textColor="#1E293B"
+                android:textColor="#FFFFFF"
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                app:cardBackgroundColor="#1E1E1E"
                 app:cardCornerRadius="16dp"
                 app:cardElevation="0dp"
-                app:strokeColor="#E2E8F0"
+                app:strokeColor="#334155"
                 app:strokeWidth="1dp">
 
                 <LinearLayout
@@ -315,7 +325,7 @@
                             android:layout_width="24dp"
                             android:layout_height="24dp"
                             android:src="@android:drawable/ic_menu_info_details"
-                            app:tint="#4A90E2" />
+                            app:tint="#6C63FF" />
 
                         <TextView
                             android:layout_width="0dp"
@@ -323,12 +333,13 @@
                             android:layout_marginStart="16dp"
                             android:layout_weight="1"
                             android:text="@string/about_app"
-                            android:textColor="#334155" />
+                            android:textColor="#FFFFFF" />
                     </LinearLayout>
 
                     <com.google.android.material.divider.MaterialDivider
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        app:dividerColor="#334155" />
 
                     <LinearLayout
                         android:id="@+id/btnPrivacy"
@@ -344,7 +355,7 @@
                             android:layout_width="24dp"
                             android:layout_height="24dp"
                             android:src="@android:drawable/ic_menu_view"
-                            app:tint="#4A90E2" />
+                            app:tint="#6C63FF" />
 
                         <TextView
                             android:layout_width="0dp"
@@ -352,7 +363,7 @@
                             android:layout_marginStart="16dp"
                             android:layout_weight="1"
                             android:text="@string/privacy_policy"
-                            android:textColor="#334155" />
+                            android:textColor="#FFFFFF" />
                     </LinearLayout>
 
                 </LinearLayout>
@@ -365,9 +376,11 @@
                 android:layout_height="56dp"
                 android:layout_marginTop="32dp"
                 android:text="@string/sign_out"
-                app:backgroundTint="#FEE2E2"
+                app:backgroundTint="#2D1A1A"
                 app:cornerRadius="16dp"
-                android:textColor="#EF4444" />
+                android:textColor="#EF4444"
+                app:strokeColor="#EF4444"
+                app:strokeWidth="1dp" />
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
@@ -377,7 +390,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:background="#FFFFFF"
+        android:background="#1E1E1E"
+        app:itemIconTint="#B0B0B0"
+        app:itemTextColor="#B0B0B0"
         app:elevation="8dp"
         app:labelVisibilityMode="labeled"
         app:menu="@menu/bottom_nav_menu" />

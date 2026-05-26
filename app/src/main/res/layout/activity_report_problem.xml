@@ -4,18 +4,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F8FAFC">
+    android:background="?android:attr/colorBackground">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@android:color/white">
+        android:background="?android:attr/colorBackground">
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             app:title="@string/report_problem"
-            app:titleTextColor="#1E293B"
+            app:titleTextColor="?android:attr/textColorPrimary"
             app:navigationIcon="?attr/homeAsUpIndicator"/>
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -36,7 +36,7 @@
                 app:cardCornerRadius="24dp"
                 app:cardElevation="0dp"
                 app:strokeWidth="1dp"
-                app:strokeColor="#E2E8F0">
+                app:strokeColor="#334155">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -48,7 +48,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/issue_header"
-                        android:textColor="#1E293B"
+                        android:textColor="?android:attr/textColorPrimary"
                         android:textSize="18sp"
                         android:textStyle="bold"
                         android:layout_marginBottom="16dp"/>
@@ -63,7 +63,8 @@
                             android:id="@+id/spinnerType"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:inputType="none"/>
+                            android:inputType="none"
+                            android:textColor="?android:attr/textColorPrimary"/>
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -78,14 +79,15 @@
                             android:layout_height="wrap_content"
                             android:inputType="textMultiLine"
                             android:minLines="3"
-                            android:gravity="top"/>
+                            android:gravity="top"
+                            android:textColor="?android:attr/textColorPrimary"/>
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/add_photo"
-                        android:textColor="#1E293B"
+                        android:textColor="?android:attr/textColorPrimary"
                         android:textSize="16sp"
                         android:textStyle="bold"
                         android:layout_marginBottom="12dp"/>
@@ -116,12 +118,12 @@
                                 android:layout_width="48dp"
                                 android:layout_height="48dp"
                                 android:src="@android:drawable/ic_menu_camera"
-                                app:tint="#94A3B8"/>
+                                app:tint="?android:attr/textColorTertiary"/>
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="@string/tap_capture"
-                                android:textColor="#94A3B8"
+                                android:textColor="?android:attr/textColorTertiary"
                                 android:layout_marginTop="8dp"/>
                         </LinearLayout>
                     </RelativeLayout>
@@ -157,7 +159,7 @@
                             android:layout_weight="1"
                             android:layout_marginStart="12dp"
                             android:text="@string/location_not_set"
-                            android:textColor="#64748B"
+                            android:textColor="?android:attr/textColorSecondary"
                             android:textSize="14sp"
                             android:maxLines="2"
                             android:ellipsize="end"/>

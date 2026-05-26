@@ -3,12 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F5F7FA">
+    android:background="#121212">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#FFFFFF"
+        android:background="#1E1E1E"
         app:elevation="0dp">
 
         <androidx.appcompat.widget.Toolbar
@@ -31,6 +31,7 @@
                 android:layout_weight="1"
                 app:cardCornerRadius="24dp"
                 app:cardElevation="2dp"
+                app:cardBackgroundColor="#2C2C2C"
                 app:strokeWidth="0dp">
 
                 <LinearLayout
@@ -44,7 +45,7 @@
                         android:layout_width="20dp"
                         android:layout_height="20dp"
                         android:src="@drawable/ic_search_modern"
-                        app:tint="#999" />
+                        app:tint="#B0B0B0" />
 
                     <EditText
                         android:id="@+id/etSearch"
@@ -52,6 +53,8 @@
                         android:layout_height="match_parent"
                         android:background="@android:color/transparent"
                         android:hint="@string/search_hint"
+                        android:textColorHint="#80B0B0B0"
+                        android:textColor="#FFFFFF"
                         android:paddingStart="12dp"
                         android:textSize="14sp"
                         android:inputType="text"
@@ -66,7 +69,7 @@
                 android:layout_marginStart="8dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:src="@android:drawable/ic_menu_preferences"
-                app:tint="?attr/colorPrimary" />
+                app:tint="#6C63FF" />
 
         </LinearLayout>
 
@@ -114,7 +117,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:text="@string/no_reports_available"
-                android:textColor="#999"
+                android:textColor="#B0B0B0"
                 android:textSize="18sp"
                 android:textStyle="bold" />
         </LinearLayout>
@@ -125,7 +128,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:background="#FFFFFF"
+        android:background="#1E1E1E"
+        app:itemIconTint="#B0B0B0"
+        app:itemTextColor="#B0B0B0"
         app:elevation="8dp"
         app:labelVisibilityMode="labeled"
         app:menu="@menu/bottom_nav_menu" />

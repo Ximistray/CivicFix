@@ -1,6 +1,7 @@
 package avik.hakobyan.civicfix;
 
 import android.app.Application;
+import androidx.appcompat.app.AppCompatDelegate;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.appcheck.FirebaseAppCheck;
@@ -10,6 +11,9 @@ public class CivicFixApp extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        
+        // Force Dark Mode
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
         
         FirebaseApp.initializeApp(this);
         

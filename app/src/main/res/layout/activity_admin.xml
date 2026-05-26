@@ -3,12 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F8FAFC">
+    android:background="?android:attr/colorBackground">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#FFFFFF"
+        android:background="?android:attr/colorBackground"
         app:elevation="0dp">
 
         <androidx.appcompat.widget.Toolbar
@@ -16,18 +16,19 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             app:title="@string/admin_panel"
-            app:titleTextColor="#1E293B"
+            app:titleTextColor="?android:attr/textColorPrimary"
             app:titleTextAppearance="@style/TextAppearance.MaterialComponents.Headline6" />
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/adminTabs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="?android:attr/colorBackground"
             app:tabIndicatorFullWidth="false"
             app:tabIndicatorHeight="3dp"
             app:tabIndicatorColor="#6C63FF"
             app:tabSelectedTextColor="#6C63FF"
-            app:tabTextColor="#94A3B8"
+            app:tabTextColor="?android:attr/textColorSecondary"
             app:tabRippleColor="@android:color/transparent">
 
             <com.google.android.material.tabs.TabItem
@@ -72,7 +73,7 @@
             android:layout_width="120dp"
             android:layout_height="120dp"
             android:src="@drawable/ic_search_modern"
-            app:tint="#E2E8F0" />
+            app:tint="?android:attr/textColorTertiary" />
 
         <TextView
             android:id="@+id/tvEmpty"
@@ -80,7 +81,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:text="@string/admin_no_reports"
-            android:textColor="#94A3B8"
+            android:textColor="?android:attr/textColorSecondary"
             android:textSize="16sp" />
     </LinearLayout>
 

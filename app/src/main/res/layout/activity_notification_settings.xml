@@ -3,12 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F8FAFC">
+    android:background="?android:attr/colorBackground">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
+        android:background="?android:attr/colorBackground"
         app:elevation="0dp">
 
         <androidx.appcompat.widget.Toolbar
@@ -17,7 +17,7 @@
             android:layout_height="?attr/actionBarSize"
             app:navigationIcon="?attr/homeAsUpIndicator"
             app:title="Notifications"
-            app:titleTextColor="#1E293B" />
+            app:titleTextColor="?android:attr/textColorPrimary" />
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.core.widget.NestedScrollView
@@ -36,7 +36,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
                 android:text="Preferences"
-                android:textColor="#1E293B"
+                android:textColor="?android:attr/textColorPrimary"
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
@@ -45,7 +45,7 @@
                 android:layout_height="wrap_content"
                 app:cardCornerRadius="16dp"
                 app:cardElevation="0dp"
-                app:strokeColor="#E2E8F0"
+                app:strokeColor="#334155"
                 app:strokeWidth="1dp">
 
                 <LinearLayout
@@ -63,7 +63,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="Report Updates"
-                            android:textColor="#334155"
+                            android:textColor="?android:attr/textColorSecondary"
                             android:textSize="16sp"/>
                         <com.google.android.material.switchmaterial.SwitchMaterial
                             android:id="@+id/switchReportUpdates"
@@ -86,7 +86,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="Comment Notifications"
-                            android:textColor="#334155"
+                            android:textColor="?android:attr/textColorSecondary"
                             android:textSize="16sp"/>
                         <com.google.android.material.switchmaterial.SwitchMaterial
                             android:id="@+id/switchCommentNotifications"
@@ -109,7 +109,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="Nearby Problem Alerts"
-                            android:textColor="#334155"
+                            android:textColor="?android:attr/textColorSecondary"
                             android:textSize="16sp"/>
                         <com.google.android.material.switchmaterial.SwitchMaterial
                             android:id="@+id/switchNearbyAlerts"
@@ -126,7 +126,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
                 android:text="* These settings are currently saved locally."
-                android:textColor="#64748B"
+                android:textColor="?android:attr/textColorTertiary"
                 android:textSize="12sp" />
 
         </LinearLayout>

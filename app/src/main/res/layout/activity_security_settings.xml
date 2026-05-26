@@ -3,12 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F8FAFC">
+    android:background="?android:attr/colorBackground">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
+        android:background="?android:attr/colorBackground"
         app:elevation="0dp">
 
         <androidx.appcompat.widget.Toolbar
@@ -17,7 +17,7 @@
             android:layout_height="?attr/actionBarSize"
             app:navigationIcon="?attr/homeAsUpIndicator"
             app:title="Security &amp; Password"
-            app:titleTextColor="#1E293B" />
+            app:titleTextColor="?android:attr/textColorPrimary" />
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.core.widget.NestedScrollView
@@ -36,7 +36,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
                 android:text="Change Password"
-                android:textColor="#1E293B"
+                android:textColor="?android:attr/textColorPrimary"
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
@@ -45,7 +45,7 @@
                 android:layout_height="wrap_content"
                 app:cardCornerRadius="16dp"
                 app:cardElevation="0dp"
-                app:strokeColor="#E2E8F0"
+                app:strokeColor="#334155"
                 app:strokeWidth="1dp">
 
                 <LinearLayout
@@ -65,6 +65,7 @@
                             android:id="@+id/etCurrentPassword"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:textColor="?android:attr/textColorPrimary"
                             android:inputType="textPassword" />
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -79,6 +80,7 @@
                             android:id="@+id/etNewPassword"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:textColor="?android:attr/textColorPrimary"
                             android:inputType="textPassword" />
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -97,7 +99,7 @@
                 android:layout_marginTop="32dp"
                 android:layout_marginBottom="8dp"
                 android:text="Account Actions"
-                android:textColor="#1E293B"
+                android:textColor="?android:attr/textColorPrimary"
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
@@ -106,7 +108,7 @@
                 android:layout_height="wrap_content"
                 app:cardCornerRadius="16dp"
                 app:cardElevation="0dp"
-                app:strokeColor="#E2E8F0"
+                app:strokeColor="#334155"
                 app:strokeWidth="1dp">
 
                 <LinearLayout

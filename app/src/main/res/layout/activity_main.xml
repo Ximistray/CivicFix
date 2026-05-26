@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F8FAFC">
+    android:background="?android:attr/colorBackground">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
@@ -27,7 +27,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/app_name"
-                    android:textColor="#1E293B"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="32sp"
                     android:fontFamily="sans-serif-black" />
 
@@ -35,7 +35,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/welcome_message"
-                    android:textColor="#64748B"
+                    android:textColor="?android:attr/textColorSecondary"
                     android:textSize="16sp" />
             </LinearLayout>
 
@@ -54,7 +54,7 @@
                     android:layout_height="28dp"
                     android:layout_gravity="center"
                     android:src="@android:drawable/ic_popup_reminder"
-                    app:tint="#1E293B" />
+                    app:tint="?android:attr/textColorPrimary" />
 
                 <View
                     android:id="@+id/notificationBadge"
@@ -137,7 +137,7 @@
                 android:layout_marginStart="4dp"
                 android:layout_marginBottom="16dp"
                 android:text="@string/explore"
-                android:textColor="#1E293B"
+                android:textColor="?android:attr/textColorPrimary"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
@@ -171,13 +171,15 @@
                         <ImageView
                             android:layout_width="40dp"
                             android:layout_height="40dp"
-                            android:src="@drawable/ic_map_modern" />
+                            android:src="@drawable/ic_map_modern"
+                            app:tint="?android:attr/textColorPrimary"/>
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="8dp"
                             android:text="@string/nav_map"
+                            android:textColor="?android:attr/textColorPrimary"
                             android:textStyle="bold" />
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
@@ -203,13 +205,15 @@
                         <ImageView
                             android:layout_width="40dp"
                             android:layout_height="40dp"
-                            android:src="@drawable/ic_history_modern" />
+                            android:src="@drawable/ic_history_modern"
+                            app:tint="?android:attr/textColorPrimary"/>
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="8dp"
                             android:text="@string/nav_reports"
+                            android:textColor="?android:attr/textColorPrimary"
                             android:textStyle="bold" />
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
@@ -235,13 +239,15 @@
                         <ImageView
                             android:layout_width="40dp"
                             android:layout_height="40dp"
-                            android:src="@drawable/ic_search_modern" />
+                            android:src="@drawable/ic_search_modern"
+                            app:tint="?android:attr/textColorPrimary"/>
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="8dp"
                             android:text="@string/all_reports"
+                            android:textColor="?android:attr/textColorPrimary"
                             android:textStyle="bold" />
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
@@ -256,7 +262,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:background="#FFFFFF"
+        android:background="?android:attr/colorBackground"
         app:elevation="8dp"
         app:labelVisibilityMode="labeled"
         app:menu="@menu/bottom_nav_menu" />
